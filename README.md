@@ -8,6 +8,9 @@ This is a GitHub Template Repository designed to act as a master "cookie cutter"
 *   `.vscode/settings.json`: Editor settings.
 *   `research/`: Keeps folder empty but strictly for source material.
 *   `drafts/`: Where you write new docs.
+*   `styles/`: Reusable style guides.
+    *   `personas/`: Tone and voice definitions (e.g., Executive, Casual, Expert).
+    *   `formats/`: Output structure definitions (e.g., Email, Reference, PowerPoint).
 *   `PROMPTS.md`: Reusable command center for Copilot prompts.
 
 ## How to Use This Template
@@ -26,6 +29,7 @@ This is a GitHub Template Repository designed to act as a master "cookie cutter"
 
 1.  **Ingestion**: Upload documents to the `research/` folder.
 2.  **Prompting**: Use commands from `PROMPTS.md` in Copilot Chat to analyze, outline, and draft content based on your research.
+    *   **Styling**: Combine files from `styles/personas` and `styles/formats` to control tone and structure (e.g., "Draft an email using #file:executive.md").
 3.  **Drafting**: Output goes into `drafts/`.
 
 ## VS Code Profile (Optional)
