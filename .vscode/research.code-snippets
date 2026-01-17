@@ -9,7 +9,7 @@
 	"Research: Ingest": {
 		"prefix": "research-ingest",
 		"body": [
-			"@workspace #folder:workspace/sources #file:PROMPTS.md Analyze the sources regarding ${1:TOPIC} using the 'Ingest' prompt."
+			"@workspace #folder:workspace #file:PROMPTS.md Analyze the sources regarding ${1:TOPIC} using the 'Ingest' prompt."
 		],
 		"description": "Analyze documents in workspace/sources"
 	},
@@ -23,7 +23,7 @@
 	"Research: Draft": {
 		"prefix": "research-draft",
 		"body": [
-			"@workspace #folder:workspace #file:PROMPTS.md Today is $CURRENT_YEAR-$CURRENT_MONTH-$CURRENT_DATE. Write the \"${1:SECTION_NAME}\" section using the 'Draft' prompt."
+			"@workspace #folder:workspace #file:$TM_FILENAME #file:PROMPTS.md Today is $CURRENT_YEAR-$CURRENT_MONTH-$CURRENT_DATE. Write the \"${1:SECTION_NAME}\" section using the 'Draft' prompt."
 		],
 		"description": "Draft content applying the active style"
 	},
@@ -37,7 +37,7 @@
 	"Research: Diagram": {
 		"prefix": "research-diagram",
 		"body": [
-			"@workspace #folder:workspace/sources #file:PROMPTS.md Visualize the relationship between ${1:CONCEPT_A} and ${2:CONCEPT_B} using the 'Diagram' prompt."
+			"@workspace #folder:workspace #file:PROMPTS.md Visualize the relationship between ${1:CONCEPT_A} and ${2:CONCEPT_B} using the 'Diagram' prompt."
 		],
 		"description": "Generate visual charts from research"
 	}

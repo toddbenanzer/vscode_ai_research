@@ -26,7 +26,7 @@ Analyze the uploaded documents in the source materials. Identify key themes, con
 Create a detailed outline for a new article titled "[INSERT TITLE]" based on the key themes in the source materials.
 
 ## Draft
-Write the "[INSERT SECTION NAME]" section for the outline in the output directory. Apply the active Persona and Format defined in `USER_SETTINGS.md`.
+Write the "[INSERT SECTION NAME]" section. If an active file is provided, append to it; otherwise, suggest a new file in the output directory. Apply the active Persona and Format defined in `USER_SETTINGS.md`.
 
 ## Critique
 Act as a 'Devil's Advocate'. Critique the arguments in the provided draft context. Identify logical fallacies, missing evidence, or alternative interpretations that have been overlooked in the source materials.
