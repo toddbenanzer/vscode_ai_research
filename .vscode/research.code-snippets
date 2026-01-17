@@ -36,5 +36,19 @@
 			"@workspace #folder:workspace Write the \"${1:SECTION_NAME}\" section for the outline we just discussed."
 		],
 		"description": "Draft content applying the active style"
+	},
+	"Research: Critique": {
+		"prefix": "research-critique",
+		"body": [
+			"@workspace #folder:workspace Act as a 'Devil's Advocate'. Critique the arguments in the current draft. Identify logical fallacies, missing evidence, or alternative interpretations that have been overlooked."
+		],
+		"description": "Challenge assumptions and find gaps"
+	},
+	"Research: Diagram": {
+		"prefix": "research-diagram",
+		"body": [
+			"@workspace #folder:workspace Create a Mermaid.js diagram (e.g., Mindmap, Flowchart, or Sequence) to visualize the relationship between ${1:CONCEPT_A} and ${2:CONCEPT_B} based on the source materials."
+		],
+		"description": "Generate visual charts from research"
 	}
 }
