@@ -2,24 +2,21 @@
 	"Research: Ingest": {
 		"prefix": "research-ingest",
 		"body": [
-			"@workspace #folder:workspace Analyze the uploaded documents. What are the top 3 conflicting arguments found across these sources regarding ${1:TOPIC}?",
-			"Ensure you check #file:.github/copilot-instructions.md for context rules."
+			"@workspace #folder:workspace Analyze the uploaded documents. What are the top 3 conflicting arguments found across these sources regarding ${1:TOPIC}?"
 		],
 		"description": "Analyze documents in workspace/"
 	},
 	"Research: Outline": {
 		"prefix": "research-outline",
 		"body": [
-			"@workspace #folder:workspace Create a detailed outline for a new article titled \"${1:TITLE}\" based on the key themes in these docs.",
-			"Ensure you check #file:.github/copilot-instructions.md for context rules."
+			"@workspace #folder:workspace Create a detailed outline for a new article titled \"${1:TITLE}\" based on the key themes in these docs."
 		],
 		"description": "Create an outline based on workspace content"
 	},
 	"Research: Draft": {
 		"prefix": "research-draft",
 		"body": [
-			"@workspace #folder:workspace Write the \"${1:SECTION_NAME}\" section for the outline we just discussed.",
-			"Apply the Persona and Format defined in #file:.github/copilot-instructions.md."
+			"@workspace #folder:workspace Write the \"${1:SECTION_NAME}\" section for the outline we just discussed."
 		],
 		"description": "Draft content applying the active style"
 	}
