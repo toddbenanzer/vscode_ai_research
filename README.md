@@ -4,10 +4,12 @@ This is a GitHub Template Repository designed to act as a master "cookie cutter"
 
 ## Directory Structure
 
-*   `.github/copilot-instructions.md`: The "Brain" (Config & Protocol) for Copilot. Edit this to set your Persona and Format.
-*   `.vscode/research.code-snippets`: Pre-defined prompts accessible via snippets.
+*   `USER_SETTINGS.md`: The main config file. Edit this to set your Persona and Format.
 *   `workspace/sources/`: Place all source materials (PDFs, docs) here.
 *   `workspace/drafts/`: Generated drafts go here.
+*   `.github/copilot-instructions.md`: The "Brain" (Protocol) for Copilot. Points to USER_SETTINGS.md.
+*   `.github/PROMPT_LIBRARY.md`: The collection of research prompts.
+*   `.vscode/research.code-snippets`: Pre-defined prompts accessible via snippets.
 
 ## How to Use This Template
 
@@ -23,9 +25,10 @@ This is a GitHub Template Repository designed to act as a master "cookie cutter"
 ## Workflow
 
 1.  **Ingestion**: Upload documents to `workspace/sources/`.
-2.  **Configuration**: Edit `.github/copilot-instructions.md` to define your desired **Active Persona** (e.g., Executive) and **Active Format** (e.g., Email).
+2.  **Configuration**: Edit `USER_SETTINGS.md` to define your desired **Active Persona** (e.g., Executive) and **Active Format** (e.g., Email).
 3.  **Prompting**: Open Copilot Chat and type the following snippets to trigger prompts:
     *   `research-ingest`: Analyze documents in `workspace/sources/`.
     *   `research-outline`: Generate an outline.
     *   `research-draft`: Draft content applying the active style.
+    *   `research-critique`: Critique the current active draft.
 4.  **Drafting**: Output will be generated in `workspace/drafts/`.

@@ -2,42 +2,42 @@
 	"Research: Start": {
 		"prefix": "research-start",
 		"body": [
-			"@workspace #folder:workspace/sources #file:.github/prompts/PLAN.md Initialize the research plan using the structure in the prompt file."
+			"@workspace #folder:workspace/sources #file:.github/PROMPT_LIBRARY.md Initialize the research plan using the structure in the 'Plan' section of the prompt library."
 		],
 		"description": "Initialize a new Research Plan"
 	},
 	"Research: Ingest": {
 		"prefix": "research-ingest",
 		"body": [
-			"@workspace #folder:workspace/sources #file:.github/prompts/INGEST.md Analyze the sources regarding ${1:TOPIC}."
+			"@workspace #folder:workspace/sources #file:.github/PROMPT_LIBRARY.md Analyze the sources regarding ${1:TOPIC} using the 'Ingest' prompt."
 		],
 		"description": "Analyze documents in workspace/sources"
 	},
 	"Research: Outline": {
 		"prefix": "research-outline",
 		"body": [
-			"@workspace #folder:workspace/sources #file:.github/prompts/OUTLINE.md Create an outline for \"${1:TITLE}\"."
+			"@workspace #folder:workspace/sources #file:.github/PROMPT_LIBRARY.md Create an outline for \"${1:TITLE}\" using the 'Outline' prompt."
 		],
 		"description": "Create an outline based on sources"
 	},
 	"Research: Draft": {
 		"prefix": "research-draft",
 		"body": [
-			"@workspace #folder:workspace/sources #file:.github/prompts/DRAFT.md Write the \"${1:SECTION_NAME}\" section."
+			"@workspace #folder:workspace/sources #file:.github/PROMPT_LIBRARY.md Write the \"${1:SECTION_NAME}\" section using the 'Draft' prompt."
 		],
 		"description": "Draft content applying the active style"
 	},
 	"Research: Critique": {
 		"prefix": "research-critique",
 		"body": [
-			"@workspace #folder:workspace/sources #file:.github/prompts/CRITIQUE.md Critique the current draft."
+			"@workspace #folder:workspace/sources #file:$TM_FILENAME #file:.github/PROMPT_LIBRARY.md Critique the current draft using the 'Critique' prompt."
 		],
-		"description": "Challenge assumptions and find gaps"
+		"description": "Challenge assumptions in the active file"
 	},
 	"Research: Diagram": {
 		"prefix": "research-diagram",
 		"body": [
-			"@workspace #folder:workspace/sources #file:.github/prompts/DIAGRAM.md Visualize the relationship between ${1:CONCEPT_A} and ${2:CONCEPT_B}."
+			"@workspace #folder:workspace/sources #file:.github/PROMPT_LIBRARY.md Visualize the relationship between ${1:CONCEPT_A} and ${2:CONCEPT_B} using the 'Diagram' prompt."
 		],
 		"description": "Generate visual charts from research"
 	}
