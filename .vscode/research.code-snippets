@@ -2,52 +2,42 @@
 	"Research: Start": {
 		"prefix": "research-start",
 		"body": [
-			"@workspace #folder:workspace Create a new file named \"RESEARCH_PLAN.md\" in the workspace. Use the following structure:",
-			"# Research Plan: ${1:TOPIC}",
-			"## 1. Objectives",
-			"- [ ] Define the primary goal.",
-			"## 2. Key Questions",
-			"- [ ] Question 1?",
-			"- [ ] Question 2?",
-			"## 3. Hypotheses",
-			"- Hypothesis A...",
-			"## 4. Source Material Checklist",
-			"- [ ] Document 1..."
+			"@workspace #folder:workspace/sources #file:.github/prompts/PLAN.md Initialize the research plan using the structure in the prompt file."
 		],
 		"description": "Initialize a new Research Plan"
 	},
 	"Research: Ingest": {
 		"prefix": "research-ingest",
 		"body": [
-			"@workspace #folder:workspace Analyze the uploaded documents. What are the top 3 conflicting arguments found across these sources regarding ${1:TOPIC}?"
+			"@workspace #folder:workspace/sources #file:.github/prompts/INGEST.md Analyze the sources regarding ${1:TOPIC}."
 		],
-		"description": "Analyze documents in workspace/"
+		"description": "Analyze documents in workspace/sources"
 	},
 	"Research: Outline": {
 		"prefix": "research-outline",
 		"body": [
-			"@workspace #folder:workspace Create a detailed outline for a new article titled \"${1:TITLE}\" based on the key themes in these docs."
+			"@workspace #folder:workspace/sources #file:.github/prompts/OUTLINE.md Create an outline for \"${1:TITLE}\"."
 		],
-		"description": "Create an outline based on workspace content"
+		"description": "Create an outline based on sources"
 	},
 	"Research: Draft": {
 		"prefix": "research-draft",
 		"body": [
-			"@workspace #folder:workspace Write the \"${1:SECTION_NAME}\" section for the outline we just discussed."
+			"@workspace #folder:workspace/sources #file:.github/prompts/DRAFT.md Write the \"${1:SECTION_NAME}\" section."
 		],
 		"description": "Draft content applying the active style"
 	},
 	"Research: Critique": {
 		"prefix": "research-critique",
 		"body": [
-			"@workspace #folder:workspace Act as a 'Devil's Advocate'. Critique the arguments in the current draft. Identify logical fallacies, missing evidence, or alternative interpretations that have been overlooked."
+			"@workspace #folder:workspace/sources #file:.github/prompts/CRITIQUE.md Critique the current draft."
 		],
 		"description": "Challenge assumptions and find gaps"
 	},
 	"Research: Diagram": {
 		"prefix": "research-diagram",
 		"body": [
-			"@workspace #folder:workspace Create a Mermaid.js diagram (e.g., Mindmap, Flowchart, or Sequence) to visualize the relationship between ${1:CONCEPT_A} and ${2:CONCEPT_B} based on the source materials."
+			"@workspace #folder:workspace/sources #file:.github/prompts/DIAGRAM.md Visualize the relationship between ${1:CONCEPT_A} and ${2:CONCEPT_B}."
 		],
 		"description": "Generate visual charts from research"
 	}

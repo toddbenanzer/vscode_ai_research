@@ -1,0 +1,1 @@
+Act as a 'Devil's Advocate'. Critique the arguments in the current draft. Identify logical fallacies, missing evidence, or alternative interpretations that have been overlooked in the `workspace/sources/`.

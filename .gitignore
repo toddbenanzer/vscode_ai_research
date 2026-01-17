@@ -1,0 +1,12 @@
+# Ignore source binaries to prevent repo bloat
+workspace/sources/*.pdf
+workspace/sources/*.docx
+workspace/sources/*.pptx
+workspace/sources/*.xlsx
+workspace/sources/*.zip
+workspace/sources/*.png
+workspace/sources/*.jpg
+
+# Ignore system files
+.DS_Store
+Thumbs.db
