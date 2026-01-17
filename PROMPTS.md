@@ -1,7 +1,13 @@
 # Research Assistant Prompt Library
 
 ## Plan
-Create a new file named "RESEARCH_PLAN.md" in the output directory. Use the following structure:
+Create a new file named "RESEARCH_PLAN.md" in the output directory. Use the following structure (ensure to include the YAML Frontmatter):
+---
+title: Research Plan: [TOPIC]
+date: [YYYY-MM-DD]
+tags: [plan, research]
+status: draft
+---
 # Research Plan: [TOPIC]
 ## 1. Objectives
 - [ ] Define the primary goal.
@@ -23,7 +29,7 @@ Create a detailed outline for a new article titled "[INSERT TITLE]" based on the
 Write the "[INSERT SECTION NAME]" section for the outline in the output directory. Apply the active Persona and Format defined in `USER_SETTINGS.md`.
 
 ## Critique
-Act as a 'Devil's Advocate'. Critique the arguments in the file in the active editor (or the output directory). Identify logical fallacies, missing evidence, or alternative interpretations that have been overlooked in the source materials.
+Act as a 'Devil's Advocate'. Critique the arguments in the provided draft context. Identify logical fallacies, missing evidence, or alternative interpretations that have been overlooked in the source materials.
 
 ## Diagram
 Create a Mermaid.js diagram (e.g., Mindmap, Flowchart, or Sequence) to visualize the relationship between key concepts based on the source materials. Ensure the output is wrapped in a markdown code block tagged `mermaid`.

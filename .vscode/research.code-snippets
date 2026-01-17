@@ -2,7 +2,7 @@
 	"Research: Start": {
 		"prefix": "research-start",
 		"body": [
-			"@workspace #folder:workspace #file:PROMPTS.md Initialize the research plan using the structure in the 'Plan' section of the prompt library."
+			"@workspace #folder:workspace #file:PROMPTS.md Today is $CURRENT_YEAR-$CURRENT_MONTH-$CURRENT_DATE. Initialize the research plan using the structure in the 'Plan' section of the prompt library."
 		],
 		"description": "Initialize a new Research Plan"
 	},
@@ -23,7 +23,7 @@
 	"Research: Draft": {
 		"prefix": "research-draft",
 		"body": [
-			"@workspace #folder:workspace #file:PROMPTS.md Write the \"${1:SECTION_NAME}\" section using the 'Draft' prompt."
+			"@workspace #folder:workspace #file:PROMPTS.md Today is $CURRENT_YEAR-$CURRENT_MONTH-$CURRENT_DATE. Write the \"${1:SECTION_NAME}\" section using the 'Draft' prompt."
 		],
 		"description": "Draft content applying the active style"
 	},
