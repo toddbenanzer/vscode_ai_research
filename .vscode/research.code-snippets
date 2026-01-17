@@ -1,0 +1,26 @@
+{
+	"Research: Ingest": {
+		"prefix": "research-ingest",
+		"body": [
+			"@workspace #folder:workspace/inputs Analyze the uploaded documents. What are the top 3 conflicting arguments found across these sources regarding ${1:TOPIC}?",
+			"Ensure you check #file:PROJECT_CONFIG.md for context rules."
+		],
+		"description": "Analyze documents in workspace/inputs"
+	},
+	"Research: Outline": {
+		"prefix": "research-outline",
+		"body": [
+			"@workspace #folder:workspace/inputs Create a detailed outline for a new article titled \"${1:TITLE}\" based on the key themes in these docs.",
+			"Ensure you check #file:PROJECT_CONFIG.md for context rules."
+		],
+		"description": "Create an outline based on inputs"
+	},
+	"Research: Draft": {
+		"prefix": "research-draft",
+		"body": [
+			"@workspace #folder:workspace/inputs Write the \"${1:SECTION_NAME}\" section for the outline we just discussed.",
+			"Apply the Persona and Format defined in #file:PROJECT_CONFIG.md."
+		],
+		"description": "Draft content applying the active style"
+	}
+}

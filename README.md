@@ -5,38 +5,28 @@ This is a GitHub Template Repository designed to act as a master "cookie cutter"
 ## Directory Structure
 
 *   `.github/copilot-instructions.md`: The "Brain" (Config) for Copilot.
-*   `.vscode/settings.json`: Editor settings.
-*   `research/`: Keeps folder empty but strictly for source material.
-*   `drafts/`: Where you write new docs.
-*   `styles/`: Reusable style guides.
-    *   `personas/`: Tone and voice definitions (e.g., Executive, Casual, Expert).
-    *   `formats/`: Output structure definitions (e.g., Email, Reference, PowerPoint).
-*   `PROMPTS.md`: Reusable command center for Copilot prompts.
+*   `.vscode/research.code-snippets`: Pre-defined prompts accessible via snippets.
+*   `workspace/inputs/`: Place source materials here.
+*   `workspace/outputs/`: Generated drafts go here.
+*   `PROJECT_CONFIG.md`: Central configuration for Styles (Personas/Formats) and Rules.
 
 ## How to Use This Template
 
 1.  **Enable Template Mode (if not already done)**:
     *   Go to the repository Settings on GitHub.
-    *   Check the box "Template repository" (usually near the top of the General settings).
+    *   Check the box "Template repository".
 
 2.  **Generate a New Project**:
-    *   Whenever you start a new topic, go to this repository on GitHub.
-    *   Click the green "Use this template" button > "Create a new repository".
+    *   Click "Use this template" > "Create a new repository".
     *   Name it (e.g., `research-quantum-computing`).
-    *   Clone it to VS Code. The folders and Copilot instructions are already there.
+    *   Clone it to VS Code.
 
 ## Workflow
 
-1.  **Ingestion**: Upload documents to the `research/` folder.
-2.  **Prompting**: Use commands from `PROMPTS.md` in Copilot Chat to analyze, outline, and draft content based on your research.
-    *   **Styling**: Combine files from `styles/personas` and `styles/formats` to control tone and structure (e.g., "Draft an email using #file:executive.md").
-3.  **Drafting**: Output goes into `drafts/`.
-
-## VS Code Profile (Optional)
-
-If you use specific extensions for research (like Markdown All in One or Paste Image), you can save them as a VS Code Profile.
-
-1.  Click the Gear Icon (Manage) > Profiles > Create Profile.
-2.  Name it "Research".
-3.  Install your preferred writing extensions.
-4.  When you open a research repo, switch to this profile.
+1.  **Ingestion**: Upload documents to `workspace/inputs/`.
+2.  **Configuration**: Edit `PROJECT_CONFIG.md` to define your desired **Persona** (e.g., Executive, Casual) and **Format** (e.g., Email, PowerPoint).
+3.  **Prompting**: Open Copilot Chat and type the following snippets to trigger prompts:
+    *   `research-ingest`: Analyze documents.
+    *   `research-outline`: Generate an outline.
+    *   `research-draft`: Draft content applying the active style from `PROJECT_CONFIG.md`.
+4.  **Drafting**: Output goes into `workspace/outputs/`.
