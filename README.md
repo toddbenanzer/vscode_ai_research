@@ -8,7 +8,7 @@ This is a GitHub Template Repository designed to act as a master "cookie cutter"
 *   `workspace/sources/`: Place all source materials (PDFs, docs) here.
 *   `workspace/drafts/`: Generated drafts go here.
 *   `.github/copilot-instructions.md`: The "Brain" (Protocol) for Copilot. Points to USER_SETTINGS.md.
-*   `.github/PROMPT_LIBRARY.md`: The collection of research prompts.
+*   `PROMPTS.md`: The collection of research prompts.
 *   `.vscode/research.code-snippets`: Pre-defined prompts accessible via snippets.
 
 ## How to Use This Template

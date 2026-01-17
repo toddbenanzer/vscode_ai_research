@@ -26,4 +26,4 @@ Write the "[INSERT SECTION NAME]" section for the outline in the output director
 Act as a 'Devil's Advocate'. Critique the arguments in the file in the active editor (or the output directory). Identify logical fallacies, missing evidence, or alternative interpretations that have been overlooked in the source materials.
 
 ## Diagram
-Create a Mermaid.js diagram (e.g., Mindmap, Flowchart, or Sequence) to visualize the relationship between key concepts based on the source materials.
+Create a Mermaid.js diagram (e.g., Mindmap, Flowchart, or Sequence) to visualize the relationship between key concepts based on the source materials. Ensure the output is wrapped in a markdown code block tagged `mermaid`.
