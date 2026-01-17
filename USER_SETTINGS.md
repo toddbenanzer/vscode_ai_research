@@ -3,6 +3,7 @@
 
 ## Active Persona
 *Uncomment one of the following personas or define your own.*
+**Important:** Ensure ONLY ONE option is uncommented at a time.
 
 **Option 1: Executive (Default)**
 - **Role:** Executive
@@ -26,6 +27,7 @@
 
 ## Active Format
 *Uncomment one of the following formats or define your own.*
+**Important:** Ensure ONLY ONE option is uncommented at a time.
 
 **Option 1: Email (Default)**
 - **Type:** Email

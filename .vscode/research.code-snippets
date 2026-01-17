@@ -9,7 +9,7 @@
 	"Research: Ingest": {
 		"prefix": "research-ingest",
 		"body": [
-			"@workspace #folder:workspace #file:PROMPTS.md Analyze the sources regarding ${1:TOPIC} using the 'Ingest' prompt."
+			"@workspace #folder:workspace/sources #file:PROMPTS.md Analyze the sources regarding ${1:TOPIC} using the 'Ingest' prompt."
 		],
 		"description": "Analyze documents in workspace/sources"
 	},
