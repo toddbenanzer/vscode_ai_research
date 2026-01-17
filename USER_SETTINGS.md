@@ -38,3 +38,6 @@
 - **Structure:** Exec Summary -> Background -> Analysis -> Recommendations.
 - **Length:** Comprehensive (1000+ words).
 -->
+
+---
+*Advanced: To edit the AI's core rules (No Code, Citations, Context Boundaries), edit `.github/copilot-instructions.md`.*
