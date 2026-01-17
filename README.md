@@ -24,11 +24,12 @@ This is a GitHub Template Repository designed to act as a master "cookie cutter"
 
 ## Workflow
 
-1.  **Ingestion**: Upload documents to `workspace/sources/`.
-2.  **Configuration**: Edit `USER_SETTINGS.md` to define your desired **Active Persona** (e.g., Executive) and **Active Format** (e.g., Email).
-3.  **Prompting**: Open Copilot Chat and type the following snippets to trigger prompts:
+1.  **Initialization**: Run `research-start` to generate a Research Plan.
+2.  **Ingestion**: Upload documents to `workspace/sources/`.
+3.  **Configuration**: Edit `USER_SETTINGS.md` to define your desired **Active Persona** (e.g., Executive) and **Active Format** (e.g., Email).
+4.  **Prompting**: Open Copilot Chat and type the following snippets to trigger prompts:
     *   `research-ingest`: Analyze documents in `workspace/sources/`.
     *   `research-outline`: Generate an outline.
     *   `research-draft`: Draft content applying the active style.
     *   `research-critique`: Critique the current active draft.
-4.  **Drafting**: Output will be generated in `workspace/drafts/`.
+5.  **Drafting**: Output will be generated in `workspace/drafts/`.
