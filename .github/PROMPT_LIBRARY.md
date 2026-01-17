@@ -20,7 +20,7 @@ Analyze the uploaded documents in the source materials. What are the top 3 confl
 Create a detailed outline for a new article titled "[INSERT TITLE]" based on the key themes in the source materials.
 
 ## Draft
-Write the "[INSERT SECTION NAME]" section for the outline we just discussed. Apply the active Persona and Format defined in the instructions.
+Write the "[INSERT SECTION NAME]" section for the outline in the output directory. Apply the active Persona and Format defined in the instructions.
 
 ## Critique
 Act as a 'Devil's Advocate'. Critique the arguments in the markdown draft in the active editor. Identify logical fallacies, missing evidence, or alternative interpretations that have been overlooked in the source materials.
