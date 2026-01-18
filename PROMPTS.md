@@ -2,13 +2,10 @@
 **IMPORTANT:** Resolve all bracketed placeholders (e.g., `[TOPIC]`, `[YYYY-MM-DD]`) with actual values from the context before generating output.
 
 ## Plan
-Create a new file named "[YYYY-MM-DD]-Research-Plan-[TOPIC].md" in the output directory. Use the following structure (ensure to include the YAML Frontmatter):
----
-title: Research Plan: [TOPIC]
-date: [YYYY-MM-DD]
-tags: [plan, research]
-status: draft
----
+Create a new file named "[YYYY-MM-DD]-Research-Plan-[TOPIC].md" in the output directory. Use the following structure (adhering to the Enterprise Metadata standard):
+
+**Metadata:** Date: [YYYY-MM-DD] | Confidence: High | Status: Plan
+
 # Research Plan: [TOPIC]
 ## 1. Objectives
 - [ ] Define the primary goal.
