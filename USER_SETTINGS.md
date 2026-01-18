@@ -23,6 +23,18 @@
 - **Tone:** Engaging, Story-driven, Accessible
 - **Constraint:** Use analogies to explain complex topics.
 - **Constraint:** Short paragraphs and hook-y headings.
+
+**Option 4: Analytics Peer / Data Scientist**
+- **Role:** Technical Lead
+- **Tone:** Precise, detailed, collaborative
+- **Constraint:** Include statistical methodology and data sources.
+- **Constraint:** Reference specific tools/languages (e.g., SQL, Python) where relevant.
+
+**Option 5: Product/Business Stakeholder**
+- **Role:** Strategic Partner
+- **Tone:** Commercial, persuasive, customer-centric
+- **Constraint:** Focus on KPIs, ROI, and customer impact.
+- **Constraint:** Connect insights to specific product goals (Deposits, Lending).
 -->
 
 ## Active Format
@@ -39,6 +51,16 @@
 - **Type:** Whitepaper
 - **Structure:** Exec Summary -> Background -> Analysis -> Recommendations.
 - **Length:** Comprehensive (1000+ words).
+
+**Option 3: Executive Briefing / Slide Content**
+- **Type:** Presentation Slides
+- **Structure:** Headline -> Key Insight -> Supporting Data Point -> Recommendation.
+- **Length:** Bullet points optimized for slides (very short).
+
+**Option 4: Analytical Memo**
+- **Type:** Report
+- **Structure:** Executive Summary -> Hypothesis -> Methodology -> Analysis -> Conclusion.
+- **Length:** Detailed (500-1000 words).
 -->
 
 ---
