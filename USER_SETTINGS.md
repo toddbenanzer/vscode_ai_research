@@ -7,7 +7,7 @@
 2.  **Traceability:** All claims must be cited from the source text.
 3.  **Classification:** All outputs must be marked "Internal Use Only".
 4.  **Formatting:** Use ISO Dates (YYYY-MM-DD) and Standard Currency ($X.X M/B).
-5.  **Metadata:** All text documents (except Emails) must start with: `**Metadata:** Date: [Today] | Confidence: [High/Med/Low] | Status: Draft`.
+5.  **Metadata:** All new files (except Emails/JSON) must start with: `**Metadata:** Date: [Today] | Confidence: [High/Med/Low] | Status: Draft`.
 
 ## Active Persona
 *Uncomment one of the following personas or define your own.*
