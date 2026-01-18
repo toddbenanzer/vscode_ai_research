@@ -6,9 +6,10 @@ This is a GitHub Template Repository designed to act as a master "cookie cutter"
 
 *   **Zero-Config Start:** Ready to use immediately with sensible defaults.
 *   **Data Hygiene:** Strict separation of `sources` (inputs) and `drafts` (outputs) to prevent AI hallucination loops.
-*   **Persona-Based Writing:** Configurable personas (Executive, Academic, etc.) controlled via `USER_SETTINGS.md`.
-*   **Automated Workflow:** VS Code snippets (`research-start`, `research-draft`) automate context management and file naming.
-*   **Safety Guards:** Built-in protocols prevent code generation, enforce citation rules, and protect system configuration files.
+*   **Persona-Based Writing:** Configurable personas (Strategic Partner, Data Scientist, Marketing Ops) controlled via `USER_SETTINGS.md`.
+*   **Enterprise Governance:** Built-in PII/CSI scrubbing, mandatory citations, and "Internal Use Only" classification.
+*   **Automated Workflow:** VS Code snippets (`research-start`, `research-synthesize`) automate context management and file naming.
+*   **Safety Guards:** Strict Anti-Hallucination protocols and Chain-of-Thought reasoning enforcement.
 
 ## Prerequisites
 
@@ -43,41 +44,42 @@ Before using this template, ensure you have:
 
 ```mermaid
 graph TD
-    A[Start: research-start] --> B[Ingest Sources: research-ingest]
-    B --> C[Outline: research-outline]
-    C --> D[Draft: research-draft]
-    D --> E[Critique: research-critique]
+    A[1. Plan: research-start] --> B[2. Ingest Sources: research-ingest]
+    B --> C[3. Outline: research-outline]
+    C --> D[4. Draft: research-draft]
+    D --> E[5. Critique: research-critique]
     E -->|Refine| D
-    B -->|Visualize| F[Diagram: research-diagram]
+    D --> F[6. Synthesize: research-synthesize]
+    B -->|Visualize| G[7. Diagram: research-diagram]
 ```
 
-1.  **Initialization**: Open the **Copilot Chat** panel. Type `research-start` (select the snippet from the dropdown) to generate a structured `RESEARCH_PLAN.md`.
-2.  **Ingestion**: Upload documents (PDF, DOCX, TXT) to the `workspace/sources/` folder.
-3.  **Configuration**: Open `USER_SETTINGS.md`. Uncomment your desired **Active Persona** and **Active Format** (remove the `<!--` and `-->` tags surrounding the block). Ensure only one is active at a time.
-4.  **Analysis**: In Chat, type `research-ingest` to identify key themes and conflicts in your sources.
+1.  **Initialization**: Open **Copilot Chat**. Type `research-start` to generate a structured `[Date]-Research-Plan-[Topic].md`.
+2.  **Ingestion**: Upload **internal** documents to `workspace/sources/`. *Strictly NO PII.*
+3.  **Configuration**: Open `USER_SETTINGS.md`. Uncomment your desired **Active Persona** (e.g., Strategic Partner) and **Active Format** (e.g., Email).
+4.  **Analysis**: Type `research-ingest` to perform a Data Quality Assessment and identify key themes.
 5.  **Drafting**:
-    *   Type `research-outline` to structure your thoughts based on the sources.
-    *   Type `research-draft` to write content. The AI will apply your active style and append to your open file.
+    *   Type `research-outline` to structure your output.
+    *   Type `research-draft` to write content. The AI will apply "Chain of Thought" reasoning before generating text.
 6.  **Refinement**:
-    *   Type `research-critique` to stress-test your active draft against the sources.
-    *   Type `research-diagram` to generate Mermaid.js charts visualizing complex relationships.
+    *   Type `research-critique` to check Governance compliance and Logic.
+    *   Type `research-synthesize` to generate a Decision-First Executive Summary.
 
 ## Quick Start Example
 
-**Goal:** Write an Executive Summary on Quantum Computing.
+**Goal:** Write a Market Analysis for a new Deposit Product.
 
-1.  **Setup:** Clone repo. Drop `quantum-report.pdf` into `workspace/sources/`.
-2.  **Config:** In `USER_SETTINGS.md`, ensure **Option 1: Executive** is active. Save the file.
-3.  **Chat:** Type `research-start`. Copilot creates `[Date]-Research-Plan.md`.
-4.  **Chat:** Type `research-ingest`. Copilot summarizes key findings from the PDF.
-5.  **Chat:** Type `research-draft`. Copilot writes a concise, BLUF-style executive summary in your draft file.
+1.  **Setup:** Clone repo. Drop `market-data-Q3.pdf` into `workspace/sources/`.
+2.  **Config:** In `USER_SETTINGS.md`, enable **Option 1: Strategic Partner** and **Option 1: Email**.
+3.  **Chat:** Type `research-start`. Define your hypothesis.
+4.  **Chat:** Type `research-ingest`. Review data quality flags.
+5.  **Chat:** Type `research-synthesize`. Copilot generates a "Decision -> Rationale -> Impact" summary table.
 
 ## Configuration Options
 
 You can toggle between these pre-defined styles in `USER_SETTINGS.md`:
 
-*   **Personas:** Executive (Default), Academic/Technical, Public Blog Post.
-*   **Formats:** Email (Default), Reference Document.
+*   **Personas:** Strategic Partner (Exec), Analytics Peer (Data Scientist), Marketing Operations.
+*   **Formats:** Email (Action-Oriented), Scenario Analysis, PowerPoint JSON, A/B Test Plan, SQL/Python Code.
 
 ## Best Practices
 
