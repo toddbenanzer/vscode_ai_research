@@ -7,8 +7,6 @@ from docx import Document
 from pypdf import PdfReader
 from bs4 import BeautifulSoup
 
-# Configure logging
-logging.basicConfig(level=logging.INFO, format='%(message)s')
 logger = logging.getLogger(__name__)
 
 def extract_from_pptx(filepath: Path) -> str:
@@ -16,24 +14,25 @@ def extract_from_pptx(filepath: Path) -> str:
     text_content = []
     prs = Presentation(filepath)
     for i, slide in enumerate(prs.slides):
-        text_content.append(f"--- Slide {i+1} ---")
+        slide_text = []
+        slide_text.append(f"--- Slide {i+1} ---")
 
         # Extract text from shapes
         for shape in slide.shapes:
             if shape.has_text_frame and shape.text_frame.text.strip():
-                text_content.append(shape.text_frame.text)
+                slide_text.append(shape.text_frame.text)
 
         # Extract text from notes
         if slide.has_notes_slide:
             notes_slide = slide.notes_slide
             text_frame = notes_slide.notes_text_frame
             if text_frame and text_frame.text.strip():
-                text_content.append("\n[Speaker Notes]:")
-                text_content.append(text_frame.text)
+                slide_text.append("\n[Speaker Notes]:")
+                slide_text.append(text_frame.text)
 
-        text_content.append("\n")
+        text_content.append("\n".join(slide_text))
 
-    return "\n".join(text_content)
+    return "\n\n".join(text_content)
 
 def extract_from_docx(filepath: Path) -> str:
     """Extracts text from a Word document."""
@@ -45,12 +44,16 @@ def extract_from_pdf(filepath: Path) -> str:
     text_content = []
     reader = PdfReader(filepath)
     for i, page in enumerate(reader.pages):
-        text_content.append(f"--- Page {i+1} ---")
+        page_text = []
+        page_text.append(f"--- Page {i+1} ---")
+
         text = page.extract_text()
-        if text:
-            text_content.append(text)
-        text_content.append("\n")
-    return "\n".join(text_content)
+        if text and text.strip():
+            page_text.append(text)
+
+        text_content.append("\n".join(page_text))
+
+    return "\n\n".join(text_content)
 
 def extract_from_html(filepath: Path) -> str:
     """Extracts text from an HTML file."""
@@ -116,6 +119,9 @@ def process_directory(directory: Path):
     logger.info(f"Finished processing. Extracted text from {count} files.")
 
 def main():
+    # Configure logging only when running as a script
+    logging.basicConfig(level=logging.INFO, format='%(message)s')
+
     parser = argparse.ArgumentParser(description="Extract raw text from documents (PPTX, DOCX, PDF, HTML).")
     parser.add_argument("path", nargs="?", default=Path("workspace/sources"), type=Path, help="File or Directory to scan (default: workspace/sources)")
     args = parser.parse_args()
