@@ -20,14 +20,14 @@ def extract_from_pptx(filepath: Path) -> str:
 
         # Extract text from shapes
         for shape in slide.shapes:
-            if shape.has_text_frame:
+            if shape.has_text_frame and shape.text_frame.text.strip():
                 text_content.append(shape.text_frame.text)
 
         # Extract text from notes
         if slide.has_notes_slide:
             notes_slide = slide.notes_slide
             text_frame = notes_slide.notes_text_frame
-            if text_frame:
+            if text_frame and text_frame.text.strip():
                 text_content.append("\n[Speaker Notes]:")
                 text_content.append(text_frame.text)
 
@@ -38,7 +38,7 @@ def extract_from_pptx(filepath: Path) -> str:
 def extract_from_docx(filepath: Path) -> str:
     """Extracts text from a Word document."""
     doc = Document(filepath)
-    return "\n".join(para.text for para in doc.paragraphs)
+    return "\n".join(para.text for para in doc.paragraphs if para.text.strip())
 
 def extract_from_pdf(filepath: Path) -> str:
     """Extracts text from a PDF file."""
@@ -46,7 +46,9 @@ def extract_from_pdf(filepath: Path) -> str:
     reader = PdfReader(filepath)
     for i, page in enumerate(reader.pages):
         text_content.append(f"--- Page {i+1} ---")
-        text_content.append(page.extract_text())
+        text = page.extract_text()
+        if text:
+            text_content.append(text)
         text_content.append("\n")
     return "\n".join(text_content)
 
@@ -103,6 +105,10 @@ def process_directory(directory: Path):
     count = 0
     # Recursive scan
     for filepath in directory.rglob('*'):
+        # Skip hidden files and directories
+        if any(part.startswith('.') for part in filepath.parts):
+            continue
+
         if filepath.is_file() and filepath.suffix.lower() in SUPPORTED_EXTENSIONS:
             process_file(filepath)
             count += 1
@@ -111,21 +117,19 @@ def process_directory(directory: Path):
 
 def main():
     parser = argparse.ArgumentParser(description="Extract raw text from documents (PPTX, DOCX, PDF, HTML).")
-    parser.add_argument("path", nargs="?", default="workspace/sources", help="File or Directory to scan (default: workspace/sources)")
+    parser.add_argument("path", nargs="?", default=Path("workspace/sources"), type=Path, help="File or Directory to scan (default: workspace/sources)")
     args = parser.parse_args()
 
-    target_path = Path(args.path)
-
-    if not target_path.exists():
-        logger.error(f"Path not found: {target_path}")
+    if not args.path.exists():
+        logger.error(f"Path not found: {args.path}")
         exit(1)
 
-    if target_path.is_file():
-        process_file(target_path)
-    elif target_path.is_dir():
-        process_directory(target_path)
+    if args.path.is_file():
+        process_file(args.path)
+    elif args.path.is_dir():
+        process_directory(args.path)
     else:
-        logger.error(f"Invalid path type: {target_path}")
+        logger.error(f"Invalid path type: {args.path}")
         exit(1)
 
 if __name__ == "__main__":
