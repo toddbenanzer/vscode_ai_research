@@ -34,6 +34,11 @@ MARGIN_HORIZONTAL = Inches(0.5)
 MARGIN_TOP = Inches(2.0)  # Room for Title
 MARGIN_BOTTOM = Inches(1.0)
 GAP_WIDTH = Inches(0.2)
+
+VISUAL_WIDTH = Inches(4)
+VISUAL_HEIGHT = Inches(1.5)
+VISUAL_OFFSET = Inches(0.5)
+
 FONT_SIZE_HEADER = Pt(18)
 FONT_SIZE_BODY = Pt(14)
 FONT_SIZE_VISUAL = Pt(12)
@@ -44,9 +49,10 @@ COLOR_GRAY_FILL = RGBColor(200, 200, 200)
 COLOR_GRAY_LINE = RGBColor(100, 100, 100)
 
 
-def create_presentation(json_data: list[dict[str, Any]], output_path: Path):
+def build_presentation(json_data: list[dict[str, Any]]) -> Presentation:
     """
-    Creates a PowerPoint presentation from the provided JSON data.
+    Builds a PowerPoint presentation object from the provided JSON data.
+    Does not save the file to disk.
     """
     prs = Presentation()
 
@@ -69,9 +75,9 @@ def create_presentation(json_data: list[dict[str, Any]], output_path: Path):
 
         if layout_name in ["2_col", "3_col", "4_col"]:
             num_cols = int(layout_name.split("_")[0])
-            _handle_column_layout(slide, content, num_cols, prs.slide_width, prs.slide_height)
+            _add_columns(slide, content, num_cols, prs.slide_width, prs.slide_height)
         elif layout_name == "bulleted":
-            _handle_standard_layout(slide, content)
+            _add_standard_bullets(slide, content)
 
         # 3. Handle Visual Data Description
         visual_desc = slide_data.get("visual_data_description")
@@ -81,26 +87,30 @@ def create_presentation(json_data: list[dict[str, Any]], output_path: Path):
         # 4. Handle Speaker Notes & Metadata
         _add_notes_and_metadata(slide, slide_data)
 
-    prs.save(output_path)
-    logger.info(f"Presentation saved to: {output_path}")
+    return prs
 
 
-def _handle_standard_layout(slide, content: list[dict[str, Any]]):
+def _add_standard_bullets(slide, content: list[dict[str, Any]]):
     """Handles standard bulleted content using the template's placeholder."""
     if not content or len(slide.placeholders) < 2:
         return
 
     tf = slide.placeholders[1].text_frame
-    tf.clear()
+    tf.clear()  # Removes all paragraphs, leaving tf.paragraphs empty? No, usually leaves one?
+    # tf.clear() in python-pptx removes all text but leaves one empty paragraph if I recall correctly.
+    # Let's verify documentation behavior or just code defensively.
 
     item = content[0]
-    for bullet in item.get("bullets", []):
-        p = tf.add_paragraph()
+    for i, bullet in enumerate(item.get("bullets", [])):
+        if i == 0 and len(tf.paragraphs) == 1 and not tf.paragraphs[0].text:
+            p = tf.paragraphs[0]
+        else:
+            p = tf.add_paragraph()
         p.text = bullet
         p.level = 0
 
 
-def _handle_column_layout(slide, content: list[dict[str, Any]], num_cols: int, slide_width: int, slide_height: int):
+def _add_columns(slide, content: list[dict[str, Any]], num_cols: int, slide_width: int, slide_height: int):
     """Programmatically creates text boxes for multi-column layouts."""
     available_width = slide_width - (2 * MARGIN_HORIZONTAL)
     total_gap_width = GAP_WIDTH * (num_cols - 1)
@@ -127,7 +137,11 @@ def _handle_column_layout(slide, content: list[dict[str, Any]], num_cols: int, s
         # Header (Bold)
         header_text = col_data.get("header", "")
         if header_text:
-            p = tf.add_paragraph()
+            # Use first paragraph if empty
+            if len(tf.paragraphs) == 1 and not tf.paragraphs[0].text:
+                p = tf.paragraphs[0]
+            else:
+                p = tf.add_paragraph()
             p.text = header_text
             p.font.bold = True
             p.font.size = FONT_SIZE_HEADER
@@ -135,7 +149,11 @@ def _handle_column_layout(slide, content: list[dict[str, Any]], num_cols: int, s
 
         # Bullets
         for bullet in col_data.get("bullets", []):
-            p = tf.add_paragraph()
+            # If header didn't exist, we might still be at the first paragraph
+            if len(tf.paragraphs) == 1 and not tf.paragraphs[0].text:
+                p = tf.paragraphs[0]
+            else:
+                p = tf.add_paragraph()
             p.text = f"{BULLET_CHAR}{bullet}"
             p.level = 0
             p.font.size = FONT_SIZE_BODY
@@ -143,12 +161,10 @@ def _handle_column_layout(slide, content: list[dict[str, Any]], num_cols: int, s
 
 def _add_visual_placeholder(slide, description: str, slide_width: int, slide_height: int):
     """Adds a placeholder shape for visual data requests."""
-    width = Inches(4)
-    height = Inches(1.5)
-    left = slide_width - width - Inches(0.5)
-    top = slide_height - height - Inches(0.5)
+    left = slide_width - VISUAL_WIDTH - VISUAL_OFFSET
+    top = slide_height - VISUAL_HEIGHT - VISUAL_OFFSET
 
-    shape = slide.shapes.add_shape(MSO_SHAPE.ROUNDED_RECTANGLE, left, top, width, height)
+    shape = slide.shapes.add_shape(MSO_SHAPE.ROUNDED_RECTANGLE, left, top, VISUAL_WIDTH, VISUAL_HEIGHT)
 
     shape.fill.solid()
     shape.fill.fore_color.rgb = COLOR_GRAY_FILL
@@ -168,7 +184,7 @@ def _add_notes_and_metadata(slide, data: dict[str, Any]):
 
     parts = []
 
-    # Preserve existing notes if any (unlikely in new slide, but safe)
+    # Preserve existing notes if any
     if text_frame.text.strip():
         parts.append(text_frame.text)
 
@@ -213,7 +229,9 @@ def main():
         with open(args.input_json, 'r', encoding='utf-8') as f:
             data = json.load(f)
 
-        create_presentation(data, output_path)
+        prs = build_presentation(data)
+        prs.save(output_path)
+        logger.info(f"Presentation saved to: {output_path}")
 
     except json.JSONDecodeError as e:
         logger.error(f"Invalid JSON format: {e}")
