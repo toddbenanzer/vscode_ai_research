@@ -5,11 +5,11 @@
 *Uncomment one of the following personas or define your own.*
 **Important:** Ensure ONLY ONE option is uncommented at a time.
 
-**Option 1: Executive (Default)**
-- **Role:** Executive
-- **Tone:** Concise, Strategic, Direct
+**Option 1: Strategic Partner / Executive (Default)**
+- **Role:** Executive / Business Leader
+- **Tone:** Concise, Strategic, Commercial
 - **Constraint:** BLUF (Bottom Line Up Front) required.
-- **Constraint:** No jargon.
+- **Constraint:** Focus on KPIs, ROI, and customer impact.
 
 <!--
 **Option 2: Academic / Technical**
@@ -30,11 +30,11 @@
 - **Constraint:** Include statistical methodology and data sources.
 - **Constraint:** Reference specific tools/languages (e.g., SQL, Python) where relevant.
 
-**Option 5: Product/Business Stakeholder**
-- **Role:** Strategic Partner
-- **Tone:** Commercial, persuasive, customer-centric
-- **Constraint:** Focus on KPIs, ROI, and customer impact.
-- **Constraint:** Connect insights to specific product goals (Deposits, Lending).
+**Option 5: Marketing Operations**
+- **Role:** Implementation Specialist
+- **Tone:** Operational, clear, action-oriented
+- **Constraint:** Focus on execution details (timelines, audience criteria, tagging).
+- **Constraint:** Explicitly list required inputs and expected outputs.
 -->
 
 ## Active Format
@@ -64,7 +64,7 @@
 
 **Option 5: PowerPoint Data Source (JSON)**
 - **Type:** JSON Data Payload
-- **Structure:** Root is a list of slide objects: `[{"title": str, "subtitle": str, "layout": str, "content": [...]}]`.
+- **Structure:** Root is a list of slide objects: `[{"title": str, "subtitle": str, "layout": str, "speaker_notes": str, "content": [...]}]`.
 - **Constraint:** `layout` must be one of: "title", "section", "bulleted", "2_col", "3_col", "4_col".
 - **Constraint:** `content` is a list of column objects: `[{"header": str, "bullets": [str, str]}]`.
 - **Constraint:** Output must be strictly raw JSON. Do not include markdown formatting (e.g., ```json ... ```) or conversational text.
