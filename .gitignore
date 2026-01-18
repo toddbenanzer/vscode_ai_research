@@ -19,3 +19,4 @@ workspace/sources/*.jpeg
 Thumbs.db
 *.log
 *.tmp
+__pycache__/
