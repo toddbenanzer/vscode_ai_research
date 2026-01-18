@@ -1,4 +1,5 @@
 # Research Assistant Prompt Library
+**IMPORTANT:** Resolve all bracketed placeholders (e.g., `[TOPIC]`, `[YYYY-MM-DD]`) with actual values from the context before generating output.
 
 ## Plan
 Create a new file named "[YYYY-MM-DD]-Research-Plan-[TOPIC].md" in the output directory. Use the following structure (ensure to include the YAML Frontmatter):
