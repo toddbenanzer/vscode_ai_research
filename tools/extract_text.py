@@ -2,17 +2,14 @@ import argparse
 import logging
 from pathlib import Path
 
-from pptx import Presentation
-from docx import Document
-from pypdf import PdfReader
-from bs4 import BeautifulSoup
-
 __all__ = ['extract_text']
 
 logger = logging.getLogger(__name__)
 
 def _extract_from_pptx(filepath: Path) -> str:
     """Extracts text from slides and speaker notes in a PowerPoint file."""
+    from pptx import Presentation
+
     text_content = []
     prs = Presentation(filepath)
     for i, slide in enumerate(prs.slides):
@@ -37,11 +34,15 @@ def _extract_from_pptx(filepath: Path) -> str:
 
 def _extract_from_docx(filepath: Path) -> str:
     """Extracts text from a Word document."""
+    from docx import Document
+
     doc = Document(filepath)
     return "\n".join(para.text for para in doc.paragraphs if para.text.strip())
 
 def _extract_from_pdf(filepath: Path) -> str:
     """Extracts text from a PDF file."""
+    from pypdf import PdfReader
+
     text_content = []
     reader = PdfReader(filepath)
     for i, page in enumerate(reader.pages):
@@ -58,6 +59,8 @@ def _extract_from_pdf(filepath: Path) -> str:
 
 def _extract_from_html(filepath: Path) -> str:
     """Extracts text from an HTML file."""
+    from bs4 import BeautifulSoup
+
     with filepath.open('r', encoding='utf-8') as f:
         soup = BeautifulSoup(f, 'html.parser')
         # remove scripts and styles
