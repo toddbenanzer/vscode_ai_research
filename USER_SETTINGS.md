@@ -17,7 +17,6 @@
 - **Role:** Executive / Business Leader
 - **Tone:** Concise, Strategic, Commercial
 - **Constraint:** Structure must be: Decision Required -> Strategic Rationale -> Impact.
-- **Constraint:** Apply "Chain of Thought": Analyze drivers and macro factors before concluding.
 - **Constraint:** Qualitative claims must be supported by quantitative proxies or data.
 
 <!--
@@ -68,7 +67,7 @@
 - **Structure:** Root is a list of slide objects: `[{"title": str, "subtitle": str, "layout": str, "classification": "Internal Use Only", "data_confidence": str, "source_references": [str], "visual_data_description": str, "speaker_notes": str, "content": [...]}]`.
 - **Constraint:** `layout` must be one of: "title", "section", "bulleted", "2_col", "3_col", "4_col".
 - **Constraint:** `content` is a list of column objects: `[{"header": str, "bullets": [str, str]}]`.
-- **Constraint:** `suggested_visual_type` examples: "Bar Chart", "Pie Chart", "Waterfall", "Text Only".
+- **Constraint:** `visual_data_description` must specify: Chart Type (Bar/Pie/etc) + Key Data Series.
 - **Constraint:** Output must be strictly raw JSON. Do not include markdown formatting (e.g., ```json ... ```) or conversational text.
 
 **Option 6: A/B Test Plan**
