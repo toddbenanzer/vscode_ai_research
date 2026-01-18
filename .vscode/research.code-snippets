@@ -37,7 +37,7 @@
 	"Research: Diagram": {
 		"prefix": "research-diagram",
 		"body": [
-			"@workspace #folder:workspace #file:PROMPTS.md Visualize the relationship between ${1:CONCEPT_A} and ${2:CONCEPT_B} using the 'Diagram' prompt."
+			"@workspace #folder:workspace/sources #file:PROMPTS.md Visualize the relationship between ${1:CONCEPT_A} and ${2:CONCEPT_B} using the 'Diagram' prompt."
 		],
 		"description": "Generate visual charts from research"
 	}

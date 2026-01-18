@@ -29,7 +29,7 @@ Create a detailed outline for a new article titled "[INSERT TITLE]" based on the
 Write the "[INSERT SECTION NAME]" section. If an active file is provided, append to it; otherwise, suggest a new file in the output directory. Apply the active Persona and Format defined in `USER_SETTINGS.md`.
 
 ## Critique
-Act as a 'Devil's Advocate'. Critique the arguments in the provided draft context. Identify logical fallacies, missing evidence, or alternative interpretations that have been overlooked in the source materials. Ensure the draft adheres to the Active Persona and Format constraints defined in `USER_SETTINGS.md`.
+Act as a 'Devil's Advocate'. Critique the arguments in the provided draft context. Identify logical fallacies, missing evidence from the source materials, or alternative interpretations supported by the sources that were ignored in the draft. Ensure the draft adheres to the Active Persona and Format constraints defined in `USER_SETTINGS.md`.
 
 ## Diagram
 Create a Mermaid.js diagram (e.g., Mindmap, Flowchart, or Sequence) to visualize the relationship between key concepts based on the source materials. Ensure the output is wrapped in a markdown code block tagged `mermaid`.
