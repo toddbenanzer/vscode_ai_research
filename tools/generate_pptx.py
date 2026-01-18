@@ -2,7 +2,7 @@ import json
 import argparse
 import logging
 from pathlib import Path
-from typing import List, Dict, Any
+from typing import Any
 
 from pptx import Presentation
 from pptx.util import Inches, Pt
@@ -11,7 +11,6 @@ from pptx.enum.shapes import MSO_SHAPE
 from pptx.dml.color import RGBColor
 
 # Configure logging
-logging.basicConfig(level=logging.INFO, format='%(message)s')
 logger = logging.getLogger(__name__)
 
 # --- CONSTANTS ---
@@ -45,7 +44,7 @@ COLOR_GRAY_FILL = RGBColor(200, 200, 200)
 COLOR_GRAY_LINE = RGBColor(100, 100, 100)
 
 
-def create_presentation(json_data: List[Dict[str, Any]], output_path: Path):
+def create_presentation(json_data: list[dict[str, Any]], output_path: Path):
     """
     Creates a PowerPoint presentation from the provided JSON data.
     """
@@ -86,7 +85,7 @@ def create_presentation(json_data: List[Dict[str, Any]], output_path: Path):
     logger.info(f"Presentation saved to: {output_path}")
 
 
-def _handle_standard_layout(slide, content: List[Dict[str, Any]]):
+def _handle_standard_layout(slide, content: list[dict[str, Any]]):
     """Handles standard bulleted content using the template's placeholder."""
     if not content or len(slide.placeholders) < 2:
         return
@@ -101,7 +100,7 @@ def _handle_standard_layout(slide, content: List[Dict[str, Any]]):
         p.level = 0
 
 
-def _handle_column_layout(slide, content: List[Dict[str, Any]], num_cols: int, slide_width: int, slide_height: int):
+def _handle_column_layout(slide, content: list[dict[str, Any]], num_cols: int, slide_width: int, slide_height: int):
     """Programmatically creates text boxes for multi-column layouts."""
     available_width = slide_width - (2 * MARGIN_HORIZONTAL)
     total_gap_width = GAP_WIDTH * (num_cols - 1)
@@ -163,31 +162,41 @@ def _add_visual_placeholder(slide, description: str, slide_width: int, slide_hei
     p.font.bold = True
 
 
-def _add_notes_and_metadata(slide, data: Dict[str, Any]):
+def _add_notes_and_metadata(slide, data: dict[str, Any]):
     """Appends speaker notes and governance metadata to the Notes slide."""
     text_frame = slide.notes_slide.notes_text_frame
 
+    parts = []
+
+    # Preserve existing notes if any (unlikely in new slide, but safe)
+    if text_frame.text.strip():
+        parts.append(text_frame.text)
+
+    # User Notes
     notes = data.get("speaker_notes", "")
+    if notes:
+        parts.append(notes)
+
+    # Governance Metadata
     classification = data.get("classification", "Internal Use Only")
     confidence = data.get("data_confidence", "Unknown")
     sources = ", ".join(data.get("source_references", []))
 
     metadata = (
-        f"\n--- GOVERNANCE METADATA ---\n"
+        f"--- GOVERNANCE METADATA ---\n"
         f"Classification: {classification}\n"
         f"Confidence: {confidence}\n"
         f"Sources: {sources}"
     )
+    parts.append(metadata)
 
-    full_text = f"{notes}\n{metadata}" if notes else metadata
-
-    if text_frame.text:
-        text_frame.text += full_text
-    else:
-        text_frame.text = full_text
+    text_frame.text = "\n\n".join(parts)
 
 
 def main():
+    # Configure logging only when running as a script
+    logging.basicConfig(level=logging.INFO, format='%(message)s')
+
     parser = argparse.ArgumentParser(description="Generate PowerPoint from JSON source.")
     parser.add_argument("input_json", type=Path, help="Path to input JSON file.")
     parser.add_argument("--output", "-o", type=Path, help="Output path (default: input_filename.pptx)")
