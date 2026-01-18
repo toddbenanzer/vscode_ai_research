@@ -15,18 +15,13 @@ logger = logging.getLogger(__name__)
 
 # --- CONSTANTS ---
 # Standard Layout Indices (Default Template)
-LAYOUT_TITLE = 0
-LAYOUT_TITLE_CONTENT = 1
-LAYOUT_SECTION = 2
-LAYOUT_TITLE_ONLY = 5
-
 LAYOUT_MAP = {
-    "title": LAYOUT_TITLE,
-    "section": LAYOUT_SECTION,
-    "bulleted": LAYOUT_TITLE_CONTENT,
-    "2_col": LAYOUT_TITLE_ONLY,
-    "3_col": LAYOUT_TITLE_ONLY,
-    "4_col": LAYOUT_TITLE_ONLY
+    "title": 0,      # Title Slide
+    "section": 2,    # Section Header
+    "bulleted": 1,   # Title and Content
+    "2_col": 5,      # Title Only
+    "3_col": 5,
+    "4_col": 5
 }
 
 # Dimensions & Fonts
@@ -58,7 +53,8 @@ def build_presentation(json_data: list[dict[str, Any]]) -> Presentation:
 
     for slide_data in json_data:
         layout_name = slide_data.get("layout", "bulleted")
-        layout_idx = LAYOUT_MAP.get(layout_name, LAYOUT_TITLE_CONTENT)
+        # Default to Title and Content (1) if unknown
+        layout_idx = LAYOUT_MAP.get(layout_name, 1)
 
         slide_layout = prs.slide_layouts[layout_idx]
         slide = prs.slides.add_slide(slide_layout)
@@ -96,18 +92,11 @@ def _add_standard_bullets(slide, content: list[dict[str, Any]]):
         return
 
     tf = slide.placeholders[1].text_frame
-    tf.clear()  # Removes all paragraphs, leaving tf.paragraphs empty? No, usually leaves one?
-    # tf.clear() in python-pptx removes all text but leaves one empty paragraph if I recall correctly.
-    # Let's verify documentation behavior or just code defensively.
+    tf.clear()
 
     item = content[0]
-    for i, bullet in enumerate(item.get("bullets", [])):
-        if i == 0 and len(tf.paragraphs) == 1 and not tf.paragraphs[0].text:
-            p = tf.paragraphs[0]
-        else:
-            p = tf.add_paragraph()
-        p.text = bullet
-        p.level = 0
+    for bullet in item.get("bullets", []):
+        _add_paragraph(tf, bullet, level=0)
 
 
 def _add_columns(slide, content: list[dict[str, Any]], num_cols: int, slide_width: int, slide_height: int):
@@ -137,26 +126,32 @@ def _add_columns(slide, content: list[dict[str, Any]], num_cols: int, slide_widt
         # Header (Bold)
         header_text = col_data.get("header", "")
         if header_text:
-            # Use first paragraph if empty
-            if len(tf.paragraphs) == 1 and not tf.paragraphs[0].text:
-                p = tf.paragraphs[0]
-            else:
-                p = tf.add_paragraph()
-            p.text = header_text
-            p.font.bold = True
-            p.font.size = FONT_SIZE_HEADER
-            p.space_after = Pt(10)
+            _add_paragraph(tf, header_text, bold=True, size=FONT_SIZE_HEADER, space_after=Pt(10))
 
         # Bullets
         for bullet in col_data.get("bullets", []):
-            # If header didn't exist, we might still be at the first paragraph
-            if len(tf.paragraphs) == 1 and not tf.paragraphs[0].text:
-                p = tf.paragraphs[0]
-            else:
-                p = tf.add_paragraph()
-            p.text = f"{BULLET_CHAR}{bullet}"
-            p.level = 0
-            p.font.size = FONT_SIZE_BODY
+            _add_paragraph(tf, f"{BULLET_CHAR}{bullet}", size=FONT_SIZE_BODY)
+
+
+def _add_paragraph(text_frame, text: str, level: int = 0, bold: bool = False, size: Pt = None, space_after: Pt = None):
+    """
+    Adds a paragraph to the text frame.
+    Uses the first paragraph if it exists and is empty to avoid leading whitespace.
+    """
+    if len(text_frame.paragraphs) == 1 and not text_frame.paragraphs[0].text:
+        p = text_frame.paragraphs[0]
+    else:
+        p = text_frame.add_paragraph()
+
+    p.text = text
+    p.level = level
+
+    if bold:
+        p.font.bold = True
+    if size:
+        p.font.size = size
+    if space_after:
+        p.space_after = space_after
 
 
 def _add_visual_placeholder(slide, description: str, slide_width: int, slide_height: int):
