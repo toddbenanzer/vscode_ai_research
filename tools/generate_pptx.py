@@ -13,12 +13,18 @@ from pptx.dml.color import RGBColor
 # Configure logging
 logger = logging.getLogger(__name__)
 
+# --- TYPES ---
+SlideData = dict[str, Any]
+
 # --- CONSTANTS ---
+DEFAULT_LAYOUT = "bulleted"
+COLUMN_LAYOUTS = {"2_col", "3_col", "4_col"}
+
 # Standard Layout Indices (Default Template)
 LAYOUT_MAP = {
     "title": 0,      # Title Slide
     "section": 2,    # Section Header
-    "bulleted": 1,   # Title and Content
+    DEFAULT_LAYOUT: 1,   # Title and Content
     "2_col": 5,      # Title Only
     "3_col": 5,
     "4_col": 5
@@ -44,7 +50,7 @@ COLOR_GRAY_FILL = RGBColor(200, 200, 200)
 COLOR_GRAY_LINE = RGBColor(100, 100, 100)
 
 
-def build_presentation(json_data: list[dict[str, Any]]) -> Presentation:
+def build_presentation(json_data: list[SlideData]) -> Presentation:
     """
     Builds a PowerPoint presentation object from the provided JSON data.
     Does not save the file to disk.
@@ -52,9 +58,9 @@ def build_presentation(json_data: list[dict[str, Any]]) -> Presentation:
     prs = Presentation()
 
     for slide_data in json_data:
-        layout_name = slide_data.get("layout", "bulleted")
-        # Default to Title and Content (1) if unknown
-        layout_idx = LAYOUT_MAP.get(layout_name, 1)
+        layout_name = slide_data.get("layout", DEFAULT_LAYOUT)
+        # Default to standard layout index if unknown
+        layout_idx = LAYOUT_MAP.get(layout_name, LAYOUT_MAP[DEFAULT_LAYOUT])
 
         slide_layout = prs.slide_layouts[layout_idx]
         slide = prs.slides.add_slide(slide_layout)
@@ -69,10 +75,10 @@ def build_presentation(json_data: list[dict[str, Any]]) -> Presentation:
         # 2. Handle Content
         content = slide_data.get("content", [])
 
-        if layout_name in ["2_col", "3_col", "4_col"]:
+        if layout_name in COLUMN_LAYOUTS:
             num_cols = int(layout_name.split("_")[0])
             _add_columns(slide, content, num_cols, prs.slide_width, prs.slide_height)
-        elif layout_name == "bulleted":
+        elif layout_name == DEFAULT_LAYOUT:
             _add_standard_bullets(slide, content)
 
         # 3. Handle Visual Data Description
@@ -86,7 +92,7 @@ def build_presentation(json_data: list[dict[str, Any]]) -> Presentation:
     return prs
 
 
-def _add_standard_bullets(slide, content: list[dict[str, Any]]):
+def _add_standard_bullets(slide, content: list[SlideData]):
     """Handles standard bulleted content using the template's placeholder."""
     if not content or len(slide.placeholders) < 2:
         return
@@ -99,7 +105,7 @@ def _add_standard_bullets(slide, content: list[dict[str, Any]]):
         _add_paragraph(tf, bullet, level=0)
 
 
-def _add_columns(slide, content: list[dict[str, Any]], num_cols: int, slide_width: int, slide_height: int):
+def _add_columns(slide, content: list[SlideData], num_cols: int, slide_width: int, slide_height: int):
     """Programmatically creates text boxes for multi-column layouts."""
     available_width = slide_width - (2 * MARGIN_HORIZONTAL)
     total_gap_width = GAP_WIDTH * (num_cols - 1)
@@ -173,7 +179,7 @@ def _add_visual_placeholder(slide, description: str, slide_width: int, slide_hei
     p.font.bold = True
 
 
-def _add_notes_and_metadata(slide, data: dict[str, Any]):
+def _add_notes_and_metadata(slide, data: SlideData):
     """Appends speaker notes and governance metadata to the Notes slide."""
     text_frame = slide.notes_slide.notes_text_frame
 
