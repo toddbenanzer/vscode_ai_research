@@ -1,12 +1,21 @@
-# Ignore source binaries to prevent repo bloat
+# Enterprise Data Firewall: Prevent PII/CSI leakage
 workspace/sources/*.pdf
 workspace/sources/*.docx
+workspace/sources/*.doc
 workspace/sources/*.pptx
-workspace/sources/*.xlsx
+workspace/sources/*.ppt
+workspace/sources/*.xls*
+workspace/sources/*.csv
+workspace/sources/*.json
+workspace/sources/*.xml
+workspace/sources/*.txt
 workspace/sources/*.zip
 workspace/sources/*.png
 workspace/sources/*.jpg
+workspace/sources/*.jpeg
 
-# Ignore system files
+# Ignore system & temp files
 .DS_Store
 Thumbs.db
+*.log
+*.tmp
