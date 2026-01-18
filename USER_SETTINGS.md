@@ -21,26 +21,14 @@
 - **Constraint:** Qualitative claims must be supported by quantitative proxies or data.
 
 <!--
-**Option 2: Academic / Technical**
-- **Role:** Subject Matter Expert
-- **Tone:** Formal, Objective, Nuanced
-- **Constraint:** Methodological rigor required.
-- **Constraint:** Define all technical terms upon first use.
-
-**Option 3: Public Blog Post**
-- **Role:** Tech Evangelist
-- **Tone:** Engaging, Story-driven, Accessible
-- **Constraint:** Use analogies to explain complex topics.
-- **Constraint:** Short paragraphs and hook-y headings.
-
-**Option 4: Analytics Peer / Data Scientist**
+**Option 2: Analytics Peer / Data Scientist**
 - **Role:** Technical Lead
 - **Tone:** Precise, detailed, collaborative
 - **Constraint:** Step 1: Explicitly list "Missing Data / Ambiguities" before starting analysis.
 - **Constraint:** Step 2: "Key Assumptions & Data Limitations" section.
 - **Constraint:** Include statistical methodology and data sources.
 
-**Option 5: Marketing Operations**
+**Option 3: Marketing Operations**
 - **Role:** Implementation Specialist
 - **Tone:** Operational, clear, action-oriented
 - **Constraint:** Explicitly define Target Audience (Segment/Behavior).
@@ -82,6 +70,18 @@
 - **Constraint:** `content` is a list of column objects: `[{"header": str, "bullets": [str, str]}]`.
 - **Constraint:** `suggested_visual_type` examples: "Bar Chart", "Pie Chart", "Waterfall", "Text Only".
 - **Constraint:** Output must be strictly raw JSON. Do not include markdown formatting (e.g., ```json ... ```) or conversational text.
+
+**Option 6: A/B Test Plan**
+- **Type:** Experiment Design
+- **Structure:** Hypothesis -> Success Metrics (Primary/Secondary) -> Audience/Sample Size -> Duration -> Validation Method.
+- **Constraint:** Define "Minimum Detectable Effect" (MDE).
+- **Length:** One Page.
+
+**Option 7: SQL / Python Code Block**
+- **Type:** Executable Code
+- **Structure:** Context -> Logic Explanation -> Code Block -> Validation Steps.
+- **Constraint:** Code must be PEP-8 (Python) or ANSII SQL compliant.
+- **Constraint:** Include detailed inline comments explaining *business logic*.
 -->
 
 ---
