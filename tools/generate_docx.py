@@ -2,101 +2,116 @@ import json
 import argparse
 import logging
 from pathlib import Path
+from typing import Dict, Any, List
 from docx import Document
 from docx.shared import Pt, RGBColor
-from docx.enum.text import WD_ALIGN_PARAGRAPH
 
-# Configure logging
-logging.basicConfig(level=logging.INFO, format='%(message)s')
+# Constants
+STYLE_TITLE = 'Heading 1'
+STYLE_SUBTITLE = 'Subtitle'
+STYLE_HEADING_2 = 'Heading 2'
+STYLE_BULLET = 'List Bullet'
+STYLE_NORMAL = 'Normal'
+
+DEFAULT_CLASSIFICATION = "Internal Use Only"
+DEFAULT_CONFIDENCE = "Unknown"
+DIVIDER_LINE = "_" * 20
+
+TEXT_KEY_POINTS = "Key Points"
+TEXT_VISUAL_PREFIX = "[VISUAL DATA REQUEST: {}]"
+
 logger = logging.getLogger(__name__)
 
-def create_document(json_data, output_path):
+def create_document(json_data: List[Dict[str, Any]], output_path: Path) -> None:
     """
     Creates a Word document from the provided JSON data.
     Follows 'Report Style': Speaker Notes are body text, Slides are highlights.
     """
     doc = Document()
 
-    # Set up some styles (optional, relying on default styles is usually safer/easier)
-    # We will use standard 'Heading 1', 'Normal', 'List Bullet', etc.
-
     for slide_index, slide_data in enumerate(json_data):
         _add_slide_section(doc, slide_data, slide_index)
 
-        # Add a page break between slides to keep them distinct sections?
-        # Or just a spacer? Use page break for clean separation of "Chapters".
+        # Add page break between sections
         if slide_index < len(json_data) - 1:
             doc.add_page_break()
 
     doc.save(output_path)
     logger.info(f"Document saved to: {output_path}")
 
-def _add_slide_section(doc, slide_data, index):
+def _add_slide_section(doc: Document, slide_data: Dict[str, Any], index: int) -> None:
     """
-    Adds a single slide's content to the document.
+    Orchestrates adding a single slide's content to the document.
     """
+    _add_title(doc, slide_data, index)
+    _add_speaker_notes(doc, slide_data)
+    _add_key_points(doc, slide_data)
+    _add_visual_placeholder(doc, slide_data)
+    _add_metadata(doc, slide_data)
+
+def _add_title(doc: Document, slide_data: Dict[str, Any], index: int) -> None:
+    """Adds the slide title and optional subtitle."""
     title = slide_data.get("title", f"Slide {index + 1}")
     layout = slide_data.get("layout", "")
 
-    # 1. Title (Heading 1)
     doc.add_heading(title, level=1)
 
-    # Subtitle (if Title slide)
     if layout == "title":
         subtitle = slide_data.get("subtitle")
         if subtitle:
-            p = doc.add_paragraph(subtitle)
-            p.style = "Subtitle"
+            doc.add_paragraph(subtitle, style=STYLE_SUBTITLE)
 
-    # 2. Body Text (Speaker Notes)
+def _add_speaker_notes(doc: Document, slide_data: Dict[str, Any]) -> None:
+    """Adds speaker notes as the main body text."""
     notes = slide_data.get("speaker_notes", "")
     if notes:
-        # Split by newlines to handle multiple paragraphs in notes
         for paragraph in notes.split("\n"):
             if paragraph.strip():
                 doc.add_paragraph(paragraph.strip())
-    else:
-        # If no notes, maybe add a placeholder or just skip
-        pass
 
-    # 3. Slide Content (Highlights / Key Points)
+def _add_key_points(doc: Document, slide_data: Dict[str, Any]) -> None:
+    """Adds slide content (bullets/columns) as a highlighted list section."""
     content = slide_data.get("content", [])
-    if content:
-        # Add a subhead for the visual content
-        h2 = doc.add_heading("Key Points", level=2)
+    if not content:
+        return
 
-        for item in content:
-            # Header for the block (e.g. column header)
-            header = item.get("header")
-            if header:
-                p = doc.add_paragraph(header)
-                p.runs[0].bold = True
+    doc.add_heading(TEXT_KEY_POINTS, level=2)
 
-            # Bullets
-            for bullet in item.get("bullets", []):
-                doc.add_paragraph(bullet, style='List Bullet')
+    for item in content:
+        header = item.get("header")
+        if header:
+            p = doc.add_paragraph(header)
+            p.runs[0].bold = True
 
-    # 4. Visual Data Description
+        for bullet in item.get("bullets", []):
+            doc.add_paragraph(bullet, style=STYLE_BULLET)
+
+def _add_visual_placeholder(doc: Document, slide_data: Dict[str, Any]) -> None:
+    """Adds a styled placeholder for requested visual data."""
     visual_desc = slide_data.get("visual_data_description")
     if visual_desc:
         p = doc.add_paragraph()
-        runner = p.add_run(f"[VISUAL DATA REQUEST: {visual_desc}]")
+        runner = p.add_run(TEXT_VISUAL_PREFIX.format(visual_desc))
         runner.italic = True
         runner.font.color.rgb = RGBColor(100, 100, 100) # Gray
 
-    # 5. Governance Metadata
-    classification = slide_data.get("classification", "Internal Use Only")
-    confidence = slide_data.get("data_confidence", "Unknown")
+def _add_metadata(doc: Document, slide_data: Dict[str, Any]) -> None:
+    """Adds governance metadata at the bottom of the section."""
+    classification = slide_data.get("classification", DEFAULT_CLASSIFICATION)
+    confidence = slide_data.get("data_confidence", DEFAULT_CONFIDENCE)
     sources = slide_data.get("source_references", [])
     source_text = ", ".join(sources) if sources else "None"
 
-    # Add a separator and metadata
-    doc.add_paragraph("_" * 20) # Divider
+    doc.add_paragraph(DIVIDER_LINE)
+
+    meta_text = f"Classification: {classification} | Confidence: {confidence} | Sources: {source_text}"
     meta_p = doc.add_paragraph()
-    meta_p.add_run(f"Classification: {classification} | Confidence: {confidence} | Sources: {source_text}").font.size = Pt(9)
+    meta_p.add_run(meta_text).font.size = Pt(9)
 
+def main() -> None:
+    # Configure logging here to avoid import side effects
+    logging.basicConfig(level=logging.INFO, format='%(message)s')
 
-def main():
     parser = argparse.ArgumentParser(description="Generate Word Document from JSON source.")
     parser.add_argument("input_json", type=Path, help="Path to input JSON file.")
     parser.add_argument("--output", "-o", type=Path, help="Output path (default: input_filename.docx)")
@@ -108,10 +123,7 @@ def main():
         exit(1)
 
     # Determine output path
-    if args.output:
-        output_path = args.output
-    else:
-        output_path = args.input_json.with_suffix(".docx")
+    output_path = args.output if args.output else args.input_json.with_suffix(".docx")
 
     try:
         with open(args.input_json, 'r', encoding='utf-8') as f:
