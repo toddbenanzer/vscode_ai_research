@@ -7,9 +7,11 @@ from docx import Document
 from pypdf import PdfReader
 from bs4 import BeautifulSoup
 
+__all__ = ['extract_text']
+
 logger = logging.getLogger(__name__)
 
-def extract_from_pptx(filepath: Path) -> str:
+def _extract_from_pptx(filepath: Path) -> str:
     """Extracts text from slides and speaker notes in a PowerPoint file."""
     text_content = []
     prs = Presentation(filepath)
@@ -24,8 +26,7 @@ def extract_from_pptx(filepath: Path) -> str:
 
         # Extract text from notes
         if slide.has_notes_slide:
-            notes_slide = slide.notes_slide
-            text_frame = notes_slide.notes_text_frame
+            text_frame = slide.notes_slide.notes_text_frame
             if text_frame and text_frame.text.strip():
                 slide_text.append("\n[Speaker Notes]:")
                 slide_text.append(text_frame.text)
@@ -34,12 +35,12 @@ def extract_from_pptx(filepath: Path) -> str:
 
     return "\n\n".join(text_content)
 
-def extract_from_docx(filepath: Path) -> str:
+def _extract_from_docx(filepath: Path) -> str:
     """Extracts text from a Word document."""
     doc = Document(filepath)
     return "\n".join(para.text for para in doc.paragraphs if para.text.strip())
 
-def extract_from_pdf(filepath: Path) -> str:
+def _extract_from_pdf(filepath: Path) -> str:
     """Extracts text from a PDF file."""
     text_content = []
     reader = PdfReader(filepath)
@@ -55,7 +56,7 @@ def extract_from_pdf(filepath: Path) -> str:
 
     return "\n\n".join(text_content)
 
-def extract_from_html(filepath: Path) -> str:
+def _extract_from_html(filepath: Path) -> str:
     """Extracts text from an HTML file."""
     with filepath.open('r', encoding='utf-8') as f:
         soup = BeautifulSoup(f, 'html.parser')
@@ -65,11 +66,11 @@ def extract_from_html(filepath: Path) -> str:
         return soup.get_text(separator='\n', strip=True)
 
 # Map extensions to extractor functions
-SUPPORTED_EXTENSIONS = {
-    '.pptx': extract_from_pptx,
-    '.docx': extract_from_docx,
-    '.pdf': extract_from_pdf,
-    '.html': extract_from_html
+_SUPPORTED_EXTENSIONS = {
+    '.pptx': _extract_from_pptx,
+    '.docx': _extract_from_docx,
+    '.pdf': _extract_from_pdf,
+    '.html': _extract_from_html
 }
 
 def extract_text(filepath: Path) -> str:
@@ -78,26 +79,22 @@ def extract_text(filepath: Path) -> str:
     Raises ValueError if the file extension is not supported.
     """
     ext = filepath.suffix.lower()
-    if ext not in SUPPORTED_EXTENSIONS:
+    if ext not in _SUPPORTED_EXTENSIONS:
         raise ValueError(f"Unsupported file type: {ext}")
 
-    return SUPPORTED_EXTENSIONS[ext](filepath)
-
-def save_text_file(filepath: Path, text: str):
-    """Saves the extracted text to a .txt file in the same directory."""
-    output_path = filepath.with_suffix('.txt')
-    output_path.write_text(text, encoding='utf-8')
-    logger.info(f"Saved to: {output_path}")
+    return _SUPPORTED_EXTENSIONS[ext](filepath)
 
 def process_file(filepath: Path):
     """Process a single file."""
-    if filepath.suffix.lower() not in SUPPORTED_EXTENSIONS:
+    if filepath.suffix.lower() not in _SUPPORTED_EXTENSIONS:
         return
 
     logger.info(f"Processing: {filepath}")
     try:
         extracted_text = extract_text(filepath)
-        save_text_file(filepath, extracted_text)
+        output_path = filepath.with_suffix('.txt')
+        output_path.write_text(extracted_text, encoding='utf-8')
+        logger.info(f"Saved to: {output_path}")
     except Exception as e:
         logger.error(f"Error reading {filepath}: {e}")
 
@@ -112,7 +109,7 @@ def process_directory(directory: Path):
         if any(part.startswith('.') for part in filepath.parts):
             continue
 
-        if filepath.is_file() and filepath.suffix.lower() in SUPPORTED_EXTENSIONS:
+        if filepath.is_file() and filepath.suffix.lower() in _SUPPORTED_EXTENSIONS:
             process_file(filepath)
             count += 1
 
