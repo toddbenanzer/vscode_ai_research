@@ -19,10 +19,7 @@ logger = logging.getLogger(__name__)
 LAYOUT_TITLE = 0
 LAYOUT_TITLE_CONTENT = 1
 LAYOUT_SECTION = 2
-LAYOUT_TWO_CONTENT = 3
-LAYOUT_COMPARISON = 4
 LAYOUT_TITLE_ONLY = 5
-LAYOUT_BLANK = 6
 
 LAYOUT_MAP = {
     "title": LAYOUT_TITLE,
@@ -36,6 +33,7 @@ LAYOUT_MAP = {
 # Dimensions & Fonts
 MARGIN_HORIZONTAL = Inches(0.5)
 MARGIN_TOP = Inches(2.0)  # Room for Title
+MARGIN_BOTTOM = Inches(1.0)
 GAP_WIDTH = Inches(0.2)
 FONT_SIZE_HEADER = Pt(18)
 FONT_SIZE_BODY = Pt(14)
@@ -90,16 +88,17 @@ def create_presentation(json_data: List[Dict[str, Any]], output_path: Path):
 
 def _handle_standard_layout(slide, content: List[Dict[str, Any]]):
     """Handles standard bulleted content using the template's placeholder."""
-    if len(slide.placeholders) > 1 and content:
-        tf = slide.placeholders[1].text_frame
-        tf.clear()
+    if not content or len(slide.placeholders) < 2:
+        return
 
-        if len(content) > 0:
-            item = content[0]
-            for bullet in item.get("bullets", []):
-                p = tf.add_paragraph()
-                p.text = bullet
-                p.level = 0
+    tf = slide.placeholders[1].text_frame
+    tf.clear()
+
+    item = content[0]
+    for bullet in item.get("bullets", []):
+        p = tf.add_paragraph()
+        p.text = bullet
+        p.level = 0
 
 
 def _handle_column_layout(slide, content: List[Dict[str, Any]], num_cols: int, slide_width: int, slide_height: int):
@@ -119,7 +118,7 @@ def _handle_column_layout(slide, content: List[Dict[str, Any]], num_cols: int, s
         # Calculate Position
         left = MARGIN_HORIZONTAL + (i * (col_width + GAP_WIDTH))
         top = MARGIN_TOP
-        height = slide_height - MARGIN_TOP - Inches(1.0)
+        height = slide_height - MARGIN_TOP - MARGIN_BOTTOM
 
         # Create Text Box
         txBox = slide.shapes.add_textbox(left, top, col_width, height)
@@ -173,18 +172,14 @@ def _add_notes_and_metadata(slide, data: Dict[str, Any]):
     confidence = data.get("data_confidence", "Unknown")
     sources = ", ".join(data.get("source_references", []))
 
-    content = []
-    if notes:
-        content.append(f"{notes}\n")
-
-    content.append(
+    metadata = (
         f"\n--- GOVERNANCE METADATA ---\n"
         f"Classification: {classification}\n"
         f"Confidence: {confidence}\n"
         f"Sources: {sources}"
     )
 
-    full_text = "".join(content)
+    full_text = f"{notes}\n{metadata}" if notes else metadata
 
     if text_frame.text:
         text_frame.text += full_text
