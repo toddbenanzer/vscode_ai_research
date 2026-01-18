@@ -41,6 +41,16 @@ Before using this template, ensure you have:
 
 ## Workflow
 
+```mermaid
+graph TD
+    A[Start: research-start] --> B[Ingest Sources: research-ingest]
+    B --> C[Outline: research-outline]
+    C --> D[Draft: research-draft]
+    D --> E[Critique: research-critique]
+    E -->|Refine| D
+    B -->|Visualize| F[Diagram: research-diagram]
+```
+
 1.  **Initialization**: Open the **Copilot Chat** panel. Type `research-start` (select the snippet from the dropdown) to generate a structured `RESEARCH_PLAN.md`.
 2.  **Ingestion**: Upload documents (PDF, DOCX, TXT) to the `workspace/sources/` folder.
 3.  **Configuration**: Open `USER_SETTINGS.md`. Uncomment your desired **Active Persona** and **Active Format**. Ensure only one is active at a time.
@@ -69,8 +79,27 @@ You can toggle between these pre-defined styles in `USER_SETTINGS.md`:
 *   **Personas:** Executive (Default), Academic/Technical, Public Blog Post.
 *   **Formats:** Email (Default), Reference Document.
 
+## Best Practices
+
+*   **One Topic Per Repo:** Keep repositories scoped to a single research topic to maintain context clarity.
+*   **Source Limits:** For best performance, keep individual source files under 10MB.
+*   **Review Settings:** Before starting a new draft, always double-check `USER_SETTINGS.md` to ensure the correct Persona is active.
+
+## Extending the Template
+
+To add your own custom Personas:
+1.  Open `USER_SETTINGS.md`.
+2.  Copy an existing block (e.g., the Executive block).
+3.  Modify the **Role**, **Tone**, and **Constraints**.
+4.  (Advanced) To modify core logic (e.g., citation rules), edit `.github/copilot-instructions.md`.
+
 ## Troubleshooting
 
 *   **AI is Hallucinating:** Check `workspace/sources/`. Are your source files there? The AI strictly adheres to the "Citation Rule" and will not invent facts if sources are missing.
+*   **Context Amnesia:** If the AI "forgets" your Outline or Plan, ensure the file is **open** in your editor. While the system can read the workspace, having the file open guarantees it is in the immediate context window.
 *   **Wrong Tone:** Check `USER_SETTINGS.md`. Did you accidentally leave two personas uncommented? Ensure only one is active.
 *   **"System Integrity" Error:** You tried to ask the AI to modify `PROMPTS.md` or `USER_SETTINGS.md`. The protocol strictly forbids this to prevent accidental breakage. Edit these files manually.
+
+## License
+
+MIT
