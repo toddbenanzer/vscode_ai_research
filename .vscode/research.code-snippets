@@ -2,43 +2,50 @@
 	"Research: Start": {
 		"prefix": "research-start",
 		"body": [
-			"@workspace #folder:workspace #file:PROMPTS.md Today is $CURRENT_YEAR-$CURRENT_MONTH-$CURRENT_DATE. Initialize the research plan using the structure in the 'Plan' section of the prompt library."
+			"@workspace #file:PROMPTS.md Execute 'Plan' for topic: ${1:TOPIC}. Date: $CURRENT_YEAR-$CURRENT_MONTH-$CURRENT_DATE."
 		],
-		"description": "Initialize a new Research Plan"
+		"description": "1. Initialize Research Plan"
 	},
 	"Research: Ingest": {
 		"prefix": "research-ingest",
 		"body": [
-			"@workspace #folder:workspace/sources #file:PROMPTS.md Analyze the sources regarding ${1:TOPIC} using the 'Ingest' prompt."
+			"@workspace #folder:workspace/sources #file:PROMPTS.md Execute 'Ingest' regarding: ${1:TOPIC}."
 		],
-		"description": "Analyze documents in workspace/sources"
+		"description": "2. Analyze Sources (Quality & Themes)"
 	},
 	"Research: Outline": {
 		"prefix": "research-outline",
 		"body": [
-			"@workspace #folder:workspace #file:PROMPTS.md Create an outline for \"${1:TITLE}\" using the 'Outline' prompt."
+			"@workspace #file:PROMPTS.md Execute 'Outline' for title: \"${1:TITLE}\"."
 		],
-		"description": "Create an outline based on sources"
+		"description": "3. Create Structured Outline"
 	},
 	"Research: Draft": {
 		"prefix": "research-draft",
 		"body": [
-			"@workspace #folder:workspace #file:$TM_FILENAME #file:PROMPTS.md Today is $CURRENT_YEAR-$CURRENT_MONTH-$CURRENT_DATE. Write the \"${1:SECTION_NAME}\" section using the 'Draft' prompt."
+			"@workspace #file:$TM_FILENAME #file:PROMPTS.md Execute 'Draft' for section: \"${1:SECTION_NAME}\". Date: $CURRENT_YEAR-$CURRENT_MONTH-$CURRENT_DATE."
 		],
-		"description": "Draft content applying the active style"
+		"description": "4. Draft Content (with CoT)"
 	},
 	"Research: Critique": {
 		"prefix": "research-critique",
 		"body": [
-			"@workspace #folder:workspace #file:$TM_FILENAME #file:PROMPTS.md Critique the current draft using the 'Critique' prompt."
+			"@workspace #file:$TM_FILENAME #file:PROMPTS.md Execute 'Critique' on this draft."
 		],
-		"description": "Challenge assumptions in the active file"
+		"description": "5. Review & Challenge (Governance Check)"
+	},
+	"Research: Synthesize": {
+		"prefix": "research-synthesize",
+		"body": [
+			"@workspace #file:$TM_FILENAME #file:PROMPTS.md Execute 'Synthesize' to generate Executive Summary."
+		],
+		"description": "6. Generate Executive Summary"
 	},
 	"Research: Diagram": {
 		"prefix": "research-diagram",
 		"body": [
-			"@workspace #folder:workspace/sources #file:PROMPTS.md Visualize the relationship between ${1:CONCEPT_A} and ${2:CONCEPT_B} using the 'Diagram' prompt."
+			"@workspace #folder:workspace/sources #file:PROMPTS.md Execute 'Diagram' for: ${1:CONCEPT}."
 		],
-		"description": "Generate visual charts from research"
+		"description": "7. Visualize Concepts"
 	}
 }
