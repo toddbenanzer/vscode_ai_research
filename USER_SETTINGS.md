@@ -61,6 +61,13 @@
 - **Type:** Report
 - **Structure:** Executive Summary -> Hypothesis -> Methodology -> Analysis -> Conclusion.
 - **Length:** Detailed (500-1000 words).
+
+**Option 5: PowerPoint Data Source (JSON)**
+- **Type:** JSON Data
+- **Structure:** Array of Slide Objects. Key fields: `title`, `subtitle`, `layout`, `content`.
+- **Constraint:** `layout` options: "title", "section", "bulleted", "2_col", "3_col", "4_col".
+- **Constraint:** `content` is an array of objects: `[{"header": "...", "bullets": ["...", "..."]}]`.
+- **Constraint:** Output MUST be a single valid JSON code block. No conversational text.
 -->
 
 ---
