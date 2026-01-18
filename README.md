@@ -16,7 +16,7 @@ This is a GitHub Template Repository designed to act as a master "cookie cutter"
 Before using this template, ensure you have:
 1.  **Visual Studio Code** installed.
 2.  **GitHub Copilot Chat** extension installed and active.
-3.  (Optional) **Markdown All in One** extension for better writing experience.
+3.  (Recommended) **Markdown All in One**, **Code Spell Checker**, and **YAML** extensions (included in `extensions.json`).
 
 ## Directory Structure
 
@@ -27,7 +27,7 @@ Before using this template, ensure you have:
     *   `drafts/`: Generated drafts go here. Includes a hygiene warning `README.md`.
 *   `.github/copilot-instructions.md`: The "Brain" (Protocol) for Copilot. Enforces rules like "No Code" and "System Integrity".
 *   `.vscode/research.code-snippets`: Pre-defined prompts accessible via snippets.
-*   `.gitignore`: Prevents binary source files (PDF, DOCX) from bloating the repo.
+*   `.gitignore`: **Enterprise Data Firewall**. Prevents data files (CSV, JSON, XLS) and binaries from being committed.
 
 ## How to Use This Template
 
@@ -37,7 +37,7 @@ Before using this template, ensure you have:
 
 2.  **Generate a New Project**:
     *   Click "Use this template" > "Create a new repository".
-    *   Name it (e.g., `research-quantum-computing`).
+    *   Name it (e.g., `research-market-trends`).
     *   Clone it to VS Code.
 
 ## Workflow
