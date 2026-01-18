@@ -10,7 +10,7 @@
 - **Tone:** Concise, Strategic, Commercial
 - **Constraint:** Structure must be: Decision Required -> Rationale -> Impact.
 - **Constraint:** Global Protocol: NO PII/CSI. All claims must be cited. Mark as "Internal Use Only".
-- **Constraint:** Focus on KPIs, ROI, and customer impact.
+- **Constraint:** Qualitative claims must be supported by quantitative proxies or data.
 
 <!--
 **Option 2: Academic / Technical**
@@ -29,6 +29,7 @@
 - **Role:** Technical Lead
 - **Tone:** Precise, detailed, collaborative
 - **Constraint:** Global Protocol: NO PII/CSI. All claims must be cited. Mark as "Internal Use Only".
+- **Constraint:** Must begin with "Key Assumptions & Data Limitations" section.
 - **Constraint:** Include statistical methodology and data sources.
 - **Constraint:** Reference specific tools/languages (e.g., SQL, Python) where relevant.
 
@@ -36,7 +37,8 @@
 - **Role:** Implementation Specialist
 - **Tone:** Operational, clear, action-oriented
 - **Constraint:** Global Protocol: NO PII/CSI. All claims must be cited. Mark as "Internal Use Only".
-- **Constraint:** Focus on execution details (timelines, audience criteria, tagging).
+- **Constraint:** Explicitly define Target Audience (Segment/Behavior).
+- **Constraint:** Focus on execution details (timelines, tagging, channels).
 - **Constraint:** Must end with table: `[Owner | Action | Due Date]`.
 -->
 
@@ -52,10 +54,11 @@
 - **Length:** <200 words.
 
 <!--
-**Option 2: Reference Document**
-- **Type:** Whitepaper
-- **Structure:** Exec Summary -> Background -> Analysis -> Recommendations.
-- **Length:** Comprehensive (1000+ words).
+**Option 2: Scenario Analysis**
+- **Type:** Strategic Projection
+- **Structure:** Context -> Base Case -> Optimistic (Bull) -> Pessimistic (Bear) -> Recommendation.
+- **Constraint:** Global Protocol: NO PII/CSI. All claims must be cited. Mark as "Internal Use Only".
+- **Length:** Detailed (1000+ words).
 
 **Option 3: Executive Briefing / Slide Content**
 - **Type:** Presentation Slides
@@ -71,7 +74,7 @@
 
 **Option 5: PowerPoint Data Source (JSON)**
 - **Type:** JSON Data Payload
-- **Structure:** Root is a list of slide objects: `[{"title": str, "subtitle": str, "layout": str, "speaker_notes": str, "suggested_visual_type": str, "content": [...]}]`.
+- **Structure:** Root is a list of slide objects: `[{"title": str, "subtitle": str, "layout": str, "speaker_notes": str, "suggested_visual_type": str, "visual_data_description": str, "content": [...]}]`.
 - **Constraint:** `layout` must be one of: "title", "section", "bulleted", "2_col", "3_col", "4_col".
 - **Constraint:** `content` is a list of column objects: `[{"header": str, "bullets": [str, str]}]`.
 - **Constraint:** `suggested_visual_type` examples: "Bar Chart", "Pie Chart", "Waterfall", "Text Only".
