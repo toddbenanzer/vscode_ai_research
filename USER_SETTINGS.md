@@ -63,11 +63,11 @@
 - **Length:** Detailed (500-1000 words).
 
 **Option 5: PowerPoint Data Source (JSON)**
-- **Type:** JSON Data
-- **Structure:** Array of Slide Objects. Key fields: `title`, `subtitle`, `layout`, `content`.
-- **Constraint:** `layout` options: "title", "section", "bulleted", "2_col", "3_col", "4_col".
-- **Constraint:** `content` is an array of objects: `[{"header": "...", "bullets": ["...", "..."]}]`.
-- **Constraint:** Output MUST be a single valid JSON code block. No conversational text.
+- **Type:** JSON Data Payload
+- **Structure:** Root is a list of slide objects: `[{"title": str, "subtitle": str, "layout": str, "content": [...]}]`.
+- **Constraint:** `layout` must be one of: "title", "section", "bulleted", "2_col", "3_col", "4_col".
+- **Constraint:** `content` is a list of column objects: `[{"header": str, "bullets": [str, str]}]`.
+- **Constraint:** Output must be strictly raw JSON. Do not include markdown formatting (e.g., ```json ... ```) or conversational text.
 -->
 
 ---
