@@ -53,7 +53,7 @@ graph TD
 
 1.  **Initialization**: Open the **Copilot Chat** panel. Type `research-start` (select the snippet from the dropdown) to generate a structured `RESEARCH_PLAN.md`.
 2.  **Ingestion**: Upload documents (PDF, DOCX, TXT) to the `workspace/sources/` folder.
-3.  **Configuration**: Open `USER_SETTINGS.md`. Uncomment your desired **Active Persona** and **Active Format**. Ensure only one is active at a time.
+3.  **Configuration**: Open `USER_SETTINGS.md`. Uncomment your desired **Active Persona** and **Active Format** (remove the `<!--` and `-->` tags surrounding the block). Ensure only one is active at a time.
 4.  **Analysis**: In Chat, type `research-ingest` to identify key themes and conflicts in your sources.
 5.  **Drafting**:
     *   Type `research-outline` to structure your thoughts based on the sources.
@@ -67,7 +67,7 @@ graph TD
 **Goal:** Write an Executive Summary on Quantum Computing.
 
 1.  **Setup:** Clone repo. Drop `quantum-report.pdf` into `workspace/sources/`.
-2.  **Config:** In `USER_SETTINGS.md`, ensure **Option 1: Executive** is active.
+2.  **Config:** In `USER_SETTINGS.md`, ensure **Option 1: Executive** is active. Save the file.
 3.  **Chat:** Type `research-start`. Copilot creates `[Date]-Research-Plan.md`.
 4.  **Chat:** Type `research-ingest`. Copilot summarizes key findings from the PDF.
 5.  **Chat:** Type `research-draft`. Copilot writes a concise, BLUF-style executive summary in your draft file.
