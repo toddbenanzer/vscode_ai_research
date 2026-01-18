@@ -17,20 +17,34 @@ status: draft
 - [ ] Question 2?
 ## 3. Hypotheses
 - Hypothesis A...
-## 4. Source Material Checklist
+## 4. Risk Assessment
+- [ ] Risk 1: (e.g., Data Gaps, Regulatory concerns)
+## 5. Source Material Checklist
 - [ ] Document 1...
 
 ## Ingest
-Analyze the uploaded documents in the source materials. Identify key themes, conflicts, or significant data points found across these sources regarding the topic.
+Analyze the uploaded documents in the source materials.
+1.  **Data Quality Assessment**: Explicitly flag any missing data, ambiguous definitions, or conflicting reports.
+2.  **Key Findings**: Identify key themes and significant data points regarding the topic.
 
 ## Outline
-Create a detailed outline for a new article titled "[INSERT TITLE]" based on the key themes in the source materials.
+Create a detailed outline for a new output titled "[INSERT TITLE]" based on the key themes in the source materials. Ensure the structure aligns with the Active Format in `USER_SETTINGS.md`.
 
 ## Draft
-Write the "[INSERT SECTION NAME]" section. If an active file is provided, append to it; otherwise, suggest a new file in the output directory. Apply the active Persona and Format defined in `USER_SETTINGS.md`.
+**Chain of Thought**: Briefly reason about the Active Persona's constraints and the source data availability before writing.
+**Task**: Write the "[INSERT SECTION NAME]" section. If an active file is provided, append to it; otherwise, suggest a new file in the output directory. Apply the active Persona and Format defined in `USER_SETTINGS.md`.
 
 ## Critique
-Act as a 'Devil's Advocate'. Critique the arguments in the provided draft context. Identify logical fallacies, missing evidence from the source materials, or alternative interpretations supported by the sources that were ignored in the draft. Ensure the draft adheres to the Active Persona and Format constraints defined in `USER_SETTINGS.md`.
+Act as a 'Devil's Advocate'. Critique the provided draft context:
+1.  **Logic & Evidence**: Identify fallacies, missing evidence, or ignored alternative interpretations.
+2.  **Governance Compliance**: Verify strict adherence to PII/CSI scrubbing and Citation rules.
+3.  **Persona Fidelity**: Ensure the tone and structure match `USER_SETTINGS.md`.
 
 ## Diagram
 Create a Mermaid.js diagram (e.g., Mindmap, Flowchart, or Sequence) to visualize the relationship between key concepts based on the source materials. Ensure the output is wrapped in a markdown code block tagged `mermaid`.
+
+## Synthesize
+Create an Executive Summary based on the provided context.
+1.  **Structure**: Strictly follow the pattern: **Decision Required** -> **Strategic Rationale** -> **Impact**.
+2.  **Constraint**: Limit to 3 paragraphs max.
+3.  **Governance**: Ensure strict PII scrubbing and citations.
