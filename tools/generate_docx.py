@@ -2,30 +2,53 @@ import json
 import argparse
 import logging
 from pathlib import Path
-from typing import Dict, Any, List
+from typing import Any
+
 from docx import Document
 from docx.shared import Pt, RGBColor
 
-# Constants
+# Configure logging
+logger = logging.getLogger(__name__)
+
+# --- TYPES ---
+SlideData = dict[str, Any]
+
+# --- CONSTANTS ---
+# JSON Keys
+KEY_TITLE = "title"
+KEY_SUBTITLE = "subtitle"
+KEY_LAYOUT = "layout"
+KEY_SPEAKER_NOTES = "speaker_notes"
+KEY_CONTENT = "content"
+KEY_HEADER = "header"
+KEY_BULLETS = "bullets"
+KEY_VISUAL_DESC = "visual_data_description"
+KEY_CLASSIFICATION = "classification"
+KEY_CONFIDENCE = "data_confidence"
+KEY_SOURCES = "source_references"
+
+# Styles
 STYLE_TITLE = 'Heading 1'
 STYLE_SUBTITLE = 'Subtitle'
 STYLE_HEADING_2 = 'Heading 2'
 STYLE_BULLET = 'List Bullet'
 STYLE_NORMAL = 'Normal'
 
+# Defaults & Formatting
 DEFAULT_CLASSIFICATION = "Internal Use Only"
 DEFAULT_CONFIDENCE = "Unknown"
 DIVIDER_LINE = "_" * 20
 
 TEXT_KEY_POINTS = "Key Points"
 TEXT_VISUAL_PREFIX = "[VISUAL DATA REQUEST: {}]"
+COLOR_GRAY = RGBColor(100, 100, 100)
 
-logger = logging.getLogger(__name__)
 
-def create_document(json_data: List[Dict[str, Any]], output_path: Path) -> None:
+def build_document(json_data: list[SlideData]) -> Document:
     """
-    Creates a Word document from the provided JSON data.
+    Builds a Word document object from the provided JSON data.
     Follows 'Report Style': Speaker Notes are body text, Slides are highlights.
+    Does not save the file to disk.
     """
     doc = Document()
 
@@ -36,77 +59,94 @@ def create_document(json_data: List[Dict[str, Any]], output_path: Path) -> None:
         if slide_index < len(json_data) - 1:
             doc.add_page_break()
 
-    doc.save(output_path)
-    logger.info(f"Document saved to: {output_path}")
+    return doc
 
-def _add_slide_section(doc: Document, slide_data: Dict[str, Any], index: int) -> None:
-    """
-    Orchestrates adding a single slide's content to the document.
-    """
+
+def _add_slide_section(doc: Document, slide_data: SlideData, index: int) -> None:
+    """Orchestrates adding a single slide's content to the document."""
     _add_title(doc, slide_data, index)
     _add_speaker_notes(doc, slide_data)
     _add_key_points(doc, slide_data)
     _add_visual_placeholder(doc, slide_data)
     _add_metadata(doc, slide_data)
 
-def _add_title(doc: Document, slide_data: Dict[str, Any], index: int) -> None:
+
+def _add_title(doc: Document, slide_data: SlideData, index: int) -> None:
     """Adds the slide title and optional subtitle."""
-    title = slide_data.get("title", f"Slide {index + 1}")
-    layout = slide_data.get("layout", "")
+    title = slide_data.get(KEY_TITLE, f"Slide {index + 1}")
+    layout = slide_data.get(KEY_LAYOUT, "")
 
     doc.add_heading(title, level=1)
 
     if layout == "title":
-        subtitle = slide_data.get("subtitle")
+        subtitle = slide_data.get(KEY_SUBTITLE)
         if subtitle:
             doc.add_paragraph(subtitle, style=STYLE_SUBTITLE)
 
-def _add_speaker_notes(doc: Document, slide_data: Dict[str, Any]) -> None:
+
+def _add_speaker_notes(doc: Document, slide_data: SlideData) -> None:
     """Adds speaker notes as the main body text."""
-    notes = slide_data.get("speaker_notes", "")
+    notes = slide_data.get(KEY_SPEAKER_NOTES, "")
     if notes:
         for paragraph in notes.split("\n"):
             if paragraph.strip():
                 doc.add_paragraph(paragraph.strip())
 
-def _add_key_points(doc: Document, slide_data: Dict[str, Any]) -> None:
+
+def _add_key_points(doc: Document, slide_data: SlideData) -> None:
     """Adds slide content (bullets/columns) as a highlighted list section."""
-    content = slide_data.get("content", [])
+    content = slide_data.get(KEY_CONTENT, [])
     if not content:
         return
 
     doc.add_heading(TEXT_KEY_POINTS, level=2)
 
     for item in content:
-        header = item.get("header")
+        header = item.get(KEY_HEADER)
         if header:
-            p = doc.add_paragraph(header)
-            p.runs[0].bold = True
+            _add_styled_paragraph(doc, header, bold=True)
 
-        for bullet in item.get("bullets", []):
+        for bullet in item.get(KEY_BULLETS, []):
             doc.add_paragraph(bullet, style=STYLE_BULLET)
 
-def _add_visual_placeholder(doc: Document, slide_data: Dict[str, Any]) -> None:
-    """Adds a styled placeholder for requested visual data."""
-    visual_desc = slide_data.get("visual_data_description")
-    if visual_desc:
-        p = doc.add_paragraph()
-        runner = p.add_run(TEXT_VISUAL_PREFIX.format(visual_desc))
-        runner.italic = True
-        runner.font.color.rgb = RGBColor(100, 100, 100) # Gray
 
-def _add_metadata(doc: Document, slide_data: Dict[str, Any]) -> None:
+def _add_visual_placeholder(doc: Document, slide_data: SlideData) -> None:
+    """Adds a styled placeholder for requested visual data."""
+    visual_desc = slide_data.get(KEY_VISUAL_DESC)
+    if visual_desc:
+        text = TEXT_VISUAL_PREFIX.format(visual_desc)
+        _add_styled_paragraph(doc, text, italic=True, color=COLOR_GRAY)
+
+
+def _add_metadata(doc: Document, slide_data: SlideData) -> None:
     """Adds governance metadata at the bottom of the section."""
-    classification = slide_data.get("classification", DEFAULT_CLASSIFICATION)
-    confidence = slide_data.get("data_confidence", DEFAULT_CONFIDENCE)
-    sources = slide_data.get("source_references", [])
+    classification = slide_data.get(KEY_CLASSIFICATION, DEFAULT_CLASSIFICATION)
+    confidence = slide_data.get(KEY_CONFIDENCE, DEFAULT_CONFIDENCE)
+    sources = slide_data.get(KEY_SOURCES, [])
     source_text = ", ".join(sources) if sources else "None"
 
     doc.add_paragraph(DIVIDER_LINE)
 
     meta_text = f"Classification: {classification} | Confidence: {confidence} | Sources: {source_text}"
-    meta_p = doc.add_paragraph()
-    meta_p.add_run(meta_text).font.size = Pt(9)
+    _add_styled_paragraph(doc, meta_text, size=Pt(9))
+
+
+def _add_styled_paragraph(doc: Document, text: str, style: str = None,
+                          bold: bool = False, italic: bool = False,
+                          color: RGBColor = None, size: Pt = None) -> None:
+    """Helper to add a paragraph with specific formatting."""
+    p = doc.add_paragraph(style=style)
+    runner = p.add_run(text)
+
+    if bold:
+        runner.bold = True
+    if italic:
+        runner.italic = True
+    if color:
+        runner.font.color.rgb = color
+    if size:
+        runner.font.size = size
+
 
 def main() -> None:
     # Configure logging here to avoid import side effects
@@ -129,7 +169,9 @@ def main() -> None:
         with open(args.input_json, 'r', encoding='utf-8') as f:
             data = json.load(f)
 
-        create_document(data, output_path)
+        doc = build_document(data)
+        doc.save(output_path)
+        logger.info(f"Document saved to: {output_path}")
 
     except json.JSONDecodeError as e:
         logger.error(f"Invalid JSON format: {e}")
