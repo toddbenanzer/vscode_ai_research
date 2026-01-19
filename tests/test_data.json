@@ -1,0 +1,43 @@
+[
+  {
+    "layout": "title",
+    "title": "Project Refactor",
+    "subtitle": "Improving Readability and Simplicity",
+    "classification": "Internal Use Only",
+    "data_confidence": "High",
+    "source_references": ["Source A"]
+  },
+  {
+    "layout": "bulleted",
+    "title": "Goals",
+    "content": [
+      {
+        "bullets": [
+          "Refactor code",
+          "Improve readability",
+          "Ensure no regressions"
+        ]
+      }
+    ],
+    "speaker_notes": "These are the main goals for today."
+  },
+  {
+    "layout": "2_col",
+    "title": "Comparison",
+    "content": [
+      {
+        "header": "Before",
+        "bullets": ["Complex logic", "Magic strings"]
+      },
+      {
+        "header": "After",
+        "bullets": ["Clean dispatch", "Constants"]
+      }
+    ]
+  },
+  {
+    "layout": "bulleted",
+    "title": "Visual Request",
+    "visual_data_description": "Bar chart showing readability score improvement over time."
+  }
+]
