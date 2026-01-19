@@ -95,7 +95,11 @@ def build_presentation(json_data: List[SlideInput]) -> Presentation:
             slide.shapes.title.text = slide_data.get(KEY_TITLE, "")
 
         # 2. Dispatch: Content
-        handler = _get_layout_handler(layout_name)
+        handler = LAYOUT_HANDLERS.get(layout_name, _handle_noop)
+        # Special handling for dynamic column layouts
+        if layout_name in COLUMN_LAYOUTS:
+             handler = _handle_columns
+
         handler(slide, slide_data, prs)
 
         # 3. Common: Visual Data
@@ -107,18 +111,6 @@ def build_presentation(json_data: List[SlideInput]) -> Presentation:
         _add_notes_and_metadata(slide, slide_data)
 
     return prs
-
-
-def _get_layout_handler(layout_name: str) -> Callable:
-    """Returns the appropriate content handler for the given layout."""
-    if layout_name == LAYOUT_TITLE:
-        return _handle_title_subtitle
-    elif layout_name == LAYOUT_BULLETED:
-        return _handle_standard_bullets
-    elif layout_name in COLUMN_LAYOUTS:
-        return _handle_columns
-    else:
-        return _handle_noop
 
 
 def _handle_title_subtitle(slide, data: SlideInput, prs: Presentation):
@@ -144,10 +136,12 @@ def _handle_standard_bullets(slide, data: SlideInput, prs: Presentation):
 def _handle_columns(slide, data: SlideInput, prs: Presentation):
     """Handles multi-column content."""
     layout_name = data.get(KEY_LAYOUT, "")
+    # Parse num_cols safely, assuming format "N_col"
     try:
         num_cols = int(layout_name.split("_")[0])
     except (ValueError, IndexError):
-        num_cols = 2 # Fallback
+        # Should not happen if layout_name is in COLUMN_LAYOUTS, but safe fallback
+        num_cols = 2
 
     content = data.get(KEY_CONTENT, [])
     _add_columns(slide, content, num_cols, prs.slide_width, prs.slide_height)
@@ -156,6 +150,14 @@ def _handle_columns(slide, data: SlideInput, prs: Presentation):
 def _handle_noop(slide, data: SlideInput, prs: Presentation):
     """Do nothing content handler."""
     pass
+
+
+# Dispatch Dictionary
+LAYOUT_HANDLERS = {
+    LAYOUT_TITLE: _handle_title_subtitle,
+    LAYOUT_BULLETED: _handle_standard_bullets,
+}
+# Note: Column layouts are handled dynamically in the loop because they share one handler
 
 
 def _add_columns(slide, content: List[SlideContent], num_cols: int, slide_width: int, slide_height: int):
