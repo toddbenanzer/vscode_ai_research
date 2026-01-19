@@ -3,7 +3,7 @@ import argparse
 import logging
 import sys
 from pathlib import Path
-from typing import TypedDict, List, Callable
+from typing import List, Callable, Dict, Any
 
 from pptx import Presentation
 from pptx.util import Inches, Pt
@@ -42,20 +42,8 @@ DEFAULT_CONFIDENCE = "Unknown"
 COLUMN_LAYOUTS = {LAYOUT_2_COL, LAYOUT_3_COL, LAYOUT_4_COL}
 
 # --- TYPES ---
-class SlideContent(TypedDict, total=False):
-    header: str
-    bullets: List[str]
-
-class SlideInput(TypedDict, total=False):
-    layout: str
-    title: str
-    subtitle: str
-    content: List[SlideContent]
-    visual_data_description: str
-    speaker_notes: str
-    classification: str
-    data_confidence: str
-    source_references: List[str]
+SlideInput = Dict[str, Any]
+SlideContent = Dict[str, Any]
 
 # Standard Layout Indices (Default Template)
 LAYOUT_MAP = {
